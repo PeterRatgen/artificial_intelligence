@@ -101,5 +101,140 @@ learning, big data and probabilistic learning boomed in the 1990's till now.
 The successes now is due to better computers, dominance of statistical
 approaches and machine learning, big data and crowd sourcing.
 
+\section{8th of February - Introduction to Python}
+
+Exercises will start at 10:20.
+\paragraph{Basics}
+Python code is fairly simple and readable. Beginning and ending of blocks is
+done purely by indentation. We will use the Python Console for trying out
+examples. Variables can change types throughout the program. A variable can
+start as a string end as float. We can use \texttt{+} for string concatenation.
+We can use triples quotes for strings containing both \texttt{'} and \texttt{"}.
+
+Variables in Python do not have intrinsic types. But assignment does not create
+copies, but references. References are deleted by the garbage collector, when
+the reference has passed out of scope. Names cannot start with numbers.
+
+We can have multiple assignments. And swapping vars is easy.
+\begin{lstlisting}
+>>> x, y = 2, 3
+>>> y
+3
+>>> x, y = y, x
+>>> y
+2
+>>> x
+3
+\end{lstlisting}
+
+\subparagraph{Sequence types}
+Sequence types are tuples, strings and lists. In a tuple we can have multiple
+types of variables. Tuples are immutable, such that they cannot be changed after
+it has been created. Strings are also immutable. Lists are mutable, they can
+also have mixed types.
+These sequence types have much syntax in common. If we have to change elements
+in an immutable tuple or string a new copy has to be created. Lists can be
+shrunk or expanded as you go. We assign some different variables:
+
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu = (23, 'abc', 4.56, (2,3), 'def')
+>>> tu
+(23, 'abc', 4.56, (2, 3), 'def')
+>>> li = ['abc', 34, 4.34, 23]
+>>> st = "Hello World"
+>>> st
+'Hello World'
+>>> st = Helllo wordl'
+  File "<stdin>", line 1
+    st = Helllo wordl'
+                ^
+SyntaxError: invalid syntax
+>>> st = 'Helllo wordl'
+>>> st
+'Helllo wordl'
+>>> st = """THis is a multiple line
+... string that uses triple quotes"""
+>>> st
+'THis is a multiple line\nstring that uses triple quotes'
+\end{lstlisting}
+We can also have negative indexes, such that -1 is the last character:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> st[-1]
+'s'
+>>> st[-2]
+'e'
+\end{lstlisting}
+If want to get the 3 middle elements of the tuple we defined:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[1:4]
+('abc', 4.56, (2, 3))
+\end{lstlisting}
+From this we get a \underline{copy} of the selected part of the tuple. If we do
+not specify where in the tuple to start, we start from the beginning.
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[:3]
+(23, 'abc', 4.56)
+\end{lstlisting}
+We can do a copy like this:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[:]
+(23, 'abc', 4.56, (2, 3), 'def')
+\end{lstlisting}
+
+In this example there is a big difference between line 3 and 4.
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> l3 = ['4', '5']
+>>> l4 = ['6', '7']
+>>> l3 = l4
+>>> l3 = l4[:]
+\end{lstlisting}
+In line 3 we assign \texttt{l3} we assign to the reference to \texttt{l4}. In
+the 4th line we assign \texttt{l3} to a \underline{copy} of \texttt{l4}, such
+that changes in \texttt{l4} will not be reflected in \texttt{l3}.
+
+We can use the \texttt{in} operator to check if we have a substring. We can
+concat tuples:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[:] + tu2[:]
+(23, 'abc', 4.56, (2, 3), 'def', 12, 'yeet')
+>>> tu + tu2
+(23, 'abc', 4.56, (2, 3), 'def', 12, 'yeet')
+\end{lstlisting}
+
+\subparagraph{Dictionaries}
+Dictionaries can store a mapping between a set of keys and values. We can
+create a dictionary with:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> d = {'user' : 'bozo', 'pswd' : 1234}
+\end{lstlisting}
+The values can be anything. We can get the value of a key like this:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> d['user']
+'bozo'
+\end{lstlisting}
+We can delete a key:value pair like this:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> del d['pswd']
+>>> d
+{'user': 'bozo'}
+\end{lstlisting}
+
+
+
+
+
+
+
+
 \end{document}
 
