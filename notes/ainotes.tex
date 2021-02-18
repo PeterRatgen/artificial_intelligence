@@ -229,7 +229,157 @@ language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
 {'user': 'bozo'}
 \end{lstlisting}
 
+\section{15th February - Intelligent Agents}
+An agent is anything that can be viewed as perceiving its environment through
+sensors and acting upon that environment through actuators. We can say that
+an agents behaviour is described by its \textbf{agent function}. This maps any sequence
+to an action. This is a mathematical abstraction, the \textit{actual program} is
+called the \textbf{agent program}
 
+We can have many types of agents, these can perceive in many ways: here are some
+examples.
+\begin{itemize}
+  \item Human agent
+    \subitem Eyes, ears, nose
+  \item Robotic agent
+    \subitem Cameras, and infrared range finders
+  \item Software agent
+    \subitem Keystrokes, file contents \& network packets.
+\end{itemize}
+
+\subsection{Vaccum-cleaner world}%
+\label{sub:vaccum_cleaner_world}
+A vecuum-cleaner has two locations to take care of: A and B. It has four
+actions: left, right, such and NoOp. We can have a simple programme for cleaning
+with this vaccum:
+
+\begin{lstlisting}
+if status = Dirty then return Suck
+else if Location = A then return Right
+else if Location = B then return Left
+\end{lstlisting}
+
+The vacuum-cleaner is a rational agent, it tries to optimize on a performance
+measure. The choice of performance measure is a critical one. "Doing the right
+thing" is to always act according to the performance measure. We also call the
+performace measure the utility function, it is an objetive criteria for the
+success of an agent's behaviour.
+
+An example of potential performance measures for the vacuum agent.
+\begin{itemize}
+  \item amount of dirt cleaned up
+  \item amount of time taken,
+  \item amount of electricity consumed
+  \item amount of noise generated
+\end{itemize}
+It would be desirable to have the agent take as little time as possible, but if
+we only consider this, then it would stand still. But if combined, with eg the
+amount of dirt cleaned up, then we could have beter operation.
+
+\subsection{Autonomy}%
+\label{sub:autonomy}
+An autonomous agnet always has the ability to learn and adapt, it can always say
+"no", it also needs enough built-in knowledge to survive.
+
+\paragraph{Task Environment Specification}
+Problem specification:
+\begin{itemize}
+  \item Performace meassure
+  \item Environment
+  \item Actuators
+  \item Sensors
+\end{itemize}
+For a autonomous taxi
+\begin{itemize}
+  \item Performace meassure
+    \subitem Safe, fastm, legal
+  \item Environment
+    \subitem Roads
+  \item Actuators
+    \subitem Steering wheel
+  \item Sensors
+    \subitem Cameras, speedometer
+\end{itemize}
+
+For an email spam filter:
+\begin{itemize}
+  \item Performace meassure
+    \subitem Manimizing false positives
+  \item Environment
+    \subitem User email account
+  \item Actuators
+    \subitem Mark as spam, let mail through
+  \item Sensors
+    \subitem Incoming messages
+\end{itemize}
+
+\subsection{Environment types}%
+\label{sub:environment_types}
+\paragraph{Fully observable vs partially observable}
+In a games, such as FIFA or any game, it is possible to oberserve everything,
+and perceive all options.
+If a robot is playing football in the real world, then the perception of the
+environment is constrained by the input of the sensors eg eyes (you do not know
+what happens behind your back).
+
+\paragraph{Deterministic vs stochastic}
+A deterministic environment is when the coming events in time is only defined
+by the current state, and the agent's future actions. Versus when the game is
+dependent on some type of randomness, whether it be a deck of cards or dice.
+This is very hard to predict.
+
+\paragraph{Episodic vs sequential}
+Is every step of the agent independent? Or does it depend on a previous
+sequence? A sequence could be a game, where current decisions depend on a 
+previous sequence of decisions. In a spam filter the sequence of spam mail does
+not matter.
+This is a matter of defintion, it is how you see your environment in terms of
+your decisions. A game could be episodic, if you choose to look upon it as a
+snapshot.
+
+\paragraph{Static vs dynamic}
+Is the world changing while the agent is thinking. Solving a rubrics cube or
+chess is static. However self-driving is very dynamic, here things are changing
+all the time. This a very challenging 
+
+
+\paragraph{Discrete vs continuous}
+Does the environment provid a fixed number of distinct number of states(can they
+be enumerated)? Where time is a factor, then time is always continuous, if you
+do not choose to look at time in buckets of seconds or minutes.
+
+\paragraph{Single-agent vs multiagent}%
+\label{par:single_agent_vs_multiagent}
+Is the agent operating by itself?
+
+\subsection{Hierarchy of agent types}%
+\label{sub:hieryachy_of_agent_types}
+\begin{itemize}
+  \item Table-driven agents, it's just like a big lookup table. 
+    \subitem The table sizes can become huge. Designing such a table is
+    challenging. We need to think about every single case.
+  \item Simple reflex agent
+    \subitem This is the vacuum cleaner. For every state given the rules, we
+    find the rule applying to the current state. It selects its action from the
+    current percept only. Implemented through condition-action rules. Example of
+    if-then algorithms. For this to work, then the environment must be fully
+    observable. This wont then work for a self-driving car.
+  \item Agents with memory, internal state to keep track of past states of the
+    world
+    \subitem We can call this a model-based reflex agent. Internal state:
+    aspects of the environment that cannot be currently observed. This is useful
+    for partially observable environments.
+    In addition to the rule we have a model, a desripton of how the next state
+    depends on current state and action.
+    We also have a state, a description of the current world state
+    the action, is the most recent action.
+
+    We update the state, according to the state, action, percept and the model.
+    When matching a rule, the we take into account the state and the rules.
+  \item Agents with goals
+    \subitem 
+  \item Utility 
+\end{itemize}
 
 
 
