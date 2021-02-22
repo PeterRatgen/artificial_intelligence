@@ -507,9 +507,11 @@ The program prints:
 \label{sec:lab_week_8}
 
 \begin{enumerate}
-  \item Successor nodes are inserted at front of the fringe (successor list) as a node is expanded. Is this a breadth (FIFO) or depth-first search (LIFO)?
+  \item Successor nodes are inserted at front of the fringe (successor list) as
+    a node is expanded. Is this a breadth (FIFO) or depth-first search (LIFO)?
     \subitem This is depth-first search. We put the successor node in front, and
     examine these first.
+
   \item For goal J, give the fringe (successor list) after expanding each node.
     \subitem The fringe list, should be empty, when we have found the goal J.
     However if we just expand the tree, going depth-first with LIFO then we
@@ -517,11 +519,13 @@ The program prints:
     \begin{center}
       J I H G F C E D B A 
     \end{center}
-  \item What is the effect of inserting successor nodes at the end of the fringe as a node is expanded? A depth or breadth-first search?
+  \item What is the effect of inserting successor nodes at the end of the fringe
+    as a node is expanded? A depth or breadth-first search?
     \subitem The effect of this is a breadth-first search.
   \item For goal J, give the fringe (successor list) after expanding each node
     \subitem A, B, C, D, E, F , G, H, I, J
 \end{enumerate}
+
 
 \end{document}
 
