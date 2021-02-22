@@ -382,9 +382,146 @@ Is the agent operating by itself?
 \end{itemize}
 
 
+\newpage
+\section{22nd of February - Solving Problems Through Search}
+
+Many problems can be solved through search. Which sequence of actions can get us
+to the goal state? This can be solved through search. We might also have a
+performance measure of minimizing time. For an example a GPS is a search
+problem, which sequence of places gets us to the goal? 
+
+A search algorithm will tell us the exact sequence to get us from the start to
+the goal. Search strategies are important methods for many approaches to
+problem-solving. Search algorithms is a basis for many optimization and planning
+methods.
+
+\begin{itemize}
+  \item We need to formulate appropriate problem as search taske 
+    \subitem We need to think about states, initial state, goal state, successor
+    functions (operators), cost. It is about creating a microworld, where the
+    computer understands what is going on.
+  \item Know the fundamental seach strategies and algorithms.
+    \begin{itemize}
+      
+      \item Uninformed search 
+      \subitem breadth-fist, depth-first, uniform-cost,
+      iterative deepening
+      \item Informed search
+      \subitem best-first (greedy, A*)
+    \end{itemize}
+  \item Evaluate the suitabilitu of a search strategy for a problem
+    \subitem Compoleteness, optimality
+\end{itemize}
+
+We will cosider the poroblem of desinging goal-based agen in observale,
+deterministic, discrete, known environments. 
+
+How we solve a comic-book maze.
+\begin{itemize}
+  \item solution fixed sequence of actions 
+  \item Search: process  of looking for the sequence of of actions that reaches
+    the goal
+  \item Agent can ignore percepts during execution.
+\end{itemize}
+
+\paragraph{Formalizing the maze problem}
+
+\begin{itemize}
+  \item Initial state 
+    \subitem Entry 
+  \item Successor Function
+  \item Goal state 
+  \item Path cost
+    \subitem Assume that it is a sum of nonnegative \textit{step costs}.
+  \item Optimal solution: sequence of actions with the lowest path cost.
+\end{itemize}
+
+\paragraph{Vacation in Romania:}
+
+\begin{itemize}
+  \item Initial state
+    \subitem Arad
+  \item Successor function
+    \subitem 
+\end{itemize}
+
+\paragraph{State Space}
+Is the inital state and the succesor function defines the state space of the
+problem. 
+\begin{itemize}
+  \item The set of all states reachable from initial state by any sequence of
+    actions.
+  \item Can represented as a directed graph (nodes are states and linked between
+    nodes are actions).
+\end{itemize}
+
+The state space for vaccum world.
+\begin{itemize}
+  \item Initial state 
+    \subitem Dirty
+  \item Goal state
+    \subitem All clean
+  \item State space.
+    \subitem 
+    \begin{figure}[H]
+      \center
+      \includegraphics[width=0.7\textwidth]{./statespace.pdf}
+    \end{figure}
+  \item Path cost
+    \subitem Could be the sum of the amouth of electricity used
+\end{itemize}
+
+\paragraph{Example: The 8-puzzle}
+The state space of the 8-puzzle has a size of 181440 states. The succesor
+function is the actions of move blank left, right, up, down.
+
+
+To build a goal-based agent, we must answer the questions:
+\begin{itemize}
+  \item How to we represent the state of the world.
+  \item What is the goal and how caan we recongize it?
+\end{itemize}
+
+How to we define the \textbf{Remove 5 sticks} problem?
+
+\subsection{Search Strategies}
+
+\paragraph{Breadth-first}
+The fringe is explored in a first in first out fashion. 
 
 
 
+\newpage
+\section{Lab - Week 7}%
+\label{sec:lab_week_7}
+
+\subsection{TABEL-DRIVEN-AGENT}%
+\label{sub:tabel_driven_agent}
+
+\paragraph{Run the module}
+The program prints:
+
+\paragraph{The percept }
+
+\section{Lab - Week 8}%
+\label{sec:lab_week_8}
+
+\begin{enumerate}
+  \item Successor nodes are inserted at front of the fringe (successor list) as a node is expanded. Is this a breadth (FIFO) or depth-first search (LIFO)?
+    \subitem This is depth-first search. We put the successor node in front, and
+    examine these first.
+  \item For goal J, give the fringe (successor list) after expanding each node.
+    \subitem The fringe list, should be empty, when we have found the goal J.
+    However if we just expand the tree, going depth-first with LIFO then we
+    would have: 
+    \begin{center}
+      J I H G F C E D B A 
+    \end{center}
+  \item What is the effect of inserting successor nodes at the end of the fringe as a node is expanded? A depth or breadth-first search?
+    \subitem The effect of this is a breadth-first search.
+  \item For goal J, give the fringe (successor list) after expanding each node
+    \subitem A, B, C, D, E, F , G, H, I, J
+\end{enumerate}
 
 \end{document}
 
