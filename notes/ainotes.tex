@@ -1,0 +1,531 @@
+\documentclass{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage[danish]{babel}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{listingsutf8}
+%\usepackage{enumitem}
+\usepackage[a4paper, top = 1in, bottom = 1in, left=1in,right=1in]{geometry}
+
+\title{Notes for AI}
+\author{Peter Heilbo Ratgen}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{1st February - Introduction}%
+\subsection{Basics}
+The course is an introduction to the basics of Artificial Intelligence. We will
+get an overview of the base of the artificial intelligence methods. We will use
+python as a programming language. Labs and support will be done in python.
+Prerequisite to the exam is to complete the homework of the lectures.
+
+You should help each other, but coding should be done individually.
+\begin{itemize}
+  \item Thinking humanly
+  \item Acting humanly
+  \subitem The Turing test is used to test this. The longer a human can be
+  fooled into thing that the human is talking to a human, and not a bot.  This
+  could be chatbots acting humanly. You have to test for:
+  \begin{itemize}
+    \item Natural language processing
+    \item Knowledge representation
+    \item Automaed reasoning\
+    \item Machine learning
+  \end{itemize}
+    Success depends on deception. Chatbot can use cheap tricks. Mitzuku has
+    recently won for the 5th time.
+    Computers have a had time with multiple choice questions. Eg the "The large
+    ball crashed right through the table because it was made of styrofoam". If
+    you replace "styrofoam" with "steel", then the answer is totally different.
+    
+    \textbf{A better test?} A better Turing test, would be one that can be
+    administed and graded by a machine, and more objectivity in the it would not
+    depend of subjectity of humans.
+
+  \item Thinking rationally
+    \subitem
+    It is about the idealized or "right" way of thinking. It is hard to describe
+    the world using logical notation. The procedure of applying these local
+    statements and deducing them. 
+    We also have a though time dealing with uncertainty, representing the gray
+    areas.
+  \item Acting rationally
+    \subitem
+    Acting rationally is acting with the goal of achieving the goal, that has
+    been set. Utility is about the goal that has been set, whether it is about,
+    shortest route, least time or fewest changes in a public transit system.
+\end{itemize}
+\subsection{Successes of AI}
+\begin{itemize}
+  \item IBM Watson is an AI created by IBM. IBM is one of the companies that has been
+investing in AI for the longest times. 
+  \item Self driving cars is one of the successes of AI. This is an example of a
+  rational acting. 
+  \item Natural language processing is also a great improvement, with speech
+technologies and machine translation.
+  \item Vision, OCR, handwriting recognition and face detection and recognition.
+  \item Mathematics, program solved unsolved conjecture. Also wolfram alpha.
+  \item Games
+    \subitem Chess(champion beaten in 1997), checkers(solved in 2007), Go
+    (beaten for the first time by a Google AI), Google AI beat top StarCraft
+    players.
+  \item Logistics, scheduling, planning.
+    \subitem A lot of the advancement are done by the military. In the 1991 Gulf
+    War an AI planned and scheduled for 50,000 vehicles and such.
+  \item Robotics
+    \subitem Mars rovers, self driving cars, drones, robot soccer, personal
+    robotics.
+\end{itemize}
+
+\subsection{History}
+First model of a neuron was in the 1940's. In the 1950's the turing test was
+created, computer chess and machine translation and theorem provers. In 1956 the
+'Artificial Intelligence' term was adopted. Herbert Simon said in 1957 that a
+computer would beat a machine and a computer would prove a theorem, this
+happened 40 years later instead of 10 years.
+They realized the problem of machine translation and chatbots was harder to
+solve than initially thought. In the late 1960's machine translation was deemed
+a failure. Intractability is recognized as fundamental problem. When the
+complexity or size of the problem grows exponentially.
+There was a boom in expert system in the 1980's and subsequently a bust. Deep
+learning, big data and probabilistic learning boomed in the 1990's till now.
+
+The successes now is due to better computers, dominance of statistical
+approaches and machine learning, big data and crowd sourcing.
+
+\section{8th of February - Introduction to Python}
+
+Exercises will start at 10:20.
+\paragraph{Basics}
+Python code is fairly simple and readable. Beginning and ending of blocks is
+done purely by indentation. We will use the Python Console for trying out
+examples. Variables can change types throughout the program. A variable can
+start as a string end as float. We can use \texttt{+} for string concatenation.
+We can use triples quotes for strings containing both \texttt{'} and \texttt{"}.
+
+Variables in Python do not have intrinsic types. But assignment does not create
+copies, but references. References are deleted by the garbage collector, when
+the reference has passed out of scope. Names cannot start with numbers.
+
+We can have multiple assignments. And swapping vars is easy.
+\begin{lstlisting}
+>>> x, y = 2, 3
+>>> y
+3
+>>> x, y = y, x
+>>> y
+2
+>>> x
+3
+\end{lstlisting}
+
+\subparagraph{Sequence types}
+Sequence types are tuples, strings and lists. In a tuple we can have multiple
+types of variables. Tuples are immutable, such that they cannot be changed after
+it has been created. Strings are also immutable. Lists are mutable, they can
+also have mixed types.
+These sequence types have much syntax in common. If we have to change elements
+in an immutable tuple or string a new copy has to be created. Lists can be
+shrunk or expanded as you go. We assign some different variables:
+
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu = (23, 'abc', 4.56, (2,3), 'def')
+>>> tu
+(23, 'abc', 4.56, (2, 3), 'def')
+>>> li = ['abc', 34, 4.34, 23]
+>>> st = "Hello World"
+>>> st
+'Hello World'
+>>> st = Helllo wordl'
+  File "<stdin>", line 1
+    st = Helllo wordl'
+                ^
+SyntaxError: invalid syntax
+>>> st = 'Helllo wordl'
+>>> st
+'Helllo wordl'
+>>> st = """THis is a multiple line
+... string that uses triple quotes"""
+>>> st
+'THis is a multiple line\nstring that uses triple quotes'
+\end{lstlisting}
+We can also have negative indexes, such that -1 is the last character:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> st[-1]
+'s'
+>>> st[-2]
+'e'
+\end{lstlisting}
+If want to get the 3 middle elements of the tuple we defined:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[1:4]
+('abc', 4.56, (2, 3))
+\end{lstlisting}
+From this we get a \underline{copy} of the selected part of the tuple. If we do
+not specify where in the tuple to start, we start from the beginning.
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[:3]
+(23, 'abc', 4.56)
+\end{lstlisting}
+We can do a copy like this:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[:]
+(23, 'abc', 4.56, (2, 3), 'def')
+\end{lstlisting}
+
+In this example there is a big difference between line 3 and 4.
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> l3 = ['4', '5']
+>>> l4 = ['6', '7']
+>>> l3 = l4
+>>> l3 = l4[:]
+\end{lstlisting}
+In line 3 we assign \texttt{l3} we assign to the reference to \texttt{l4}. In
+the 4th line we assign \texttt{l3} to a \underline{copy} of \texttt{l4}, such
+that changes in \texttt{l4} will not be reflected in \texttt{l3}.
+
+We can use the \texttt{in} operator to check if we have a substring. We can
+concat tuples:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> tu[:] + tu2[:]
+(23, 'abc', 4.56, (2, 3), 'def', 12, 'yeet')
+>>> tu + tu2
+(23, 'abc', 4.56, (2, 3), 'def', 12, 'yeet')
+\end{lstlisting}
+
+\subparagraph{Dictionaries}
+Dictionaries can store a mapping between a set of keys and values. We can
+create a dictionary with:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> d = {'user' : 'bozo', 'pswd' : 1234}
+\end{lstlisting}
+The values can be anything. We can get the value of a key like this:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> d['user']
+'bozo'
+\end{lstlisting}
+We can delete a key:value pair like this:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\ttfamily,
+language=python, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+>>> del d['pswd']
+>>> d
+{'user': 'bozo'}
+\end{lstlisting}
+
+\section{15th February - Intelligent Agents}
+An agent is anything that can be viewed as perceiving its environment through
+sensors and acting upon that environment through actuators. We can say that
+an agents behaviour is described by its \textbf{agent function}. This maps any sequence
+to an action. This is a mathematical abstraction, the \textit{actual program} is
+called the \textbf{agent program}
+
+We can have many types of agents, these can perceive in many ways: here are some
+examples.
+\begin{itemize}
+  \item Human agent
+    \subitem Eyes, ears, nose
+  \item Robotic agent
+    \subitem Cameras, and infrared range finders
+  \item Software agent
+    \subitem Keystrokes, file contents \& network packets.
+\end{itemize}
+
+\subsection{Vaccum-cleaner world}%
+\label{sub:vaccum_cleaner_world}
+A vecuum-cleaner has two locations to take care of: A and B. It has four
+actions: left, right, such and NoOp. We can have a simple programme for cleaning
+with this vaccum:
+
+\begin{lstlisting}
+if status = Dirty then return Suck
+else if Location = A then return Right
+else if Location = B then return Left
+\end{lstlisting}
+
+The vacuum-cleaner is a rational agent, it tries to optimize on a performance
+measure. The choice of performance measure is a critical one. "Doing the right
+thing" is to always act according to the performance measure. We also call the
+performace measure the utility function, it is an objetive criteria for the
+success of an agent's behaviour.
+
+An example of potential performance measures for the vacuum agent.
+\begin{itemize}
+  \item amount of dirt cleaned up
+  \item amount of time taken,
+  \item amount of electricity consumed
+  \item amount of noise generated
+\end{itemize}
+It would be desirable to have the agent take as little time as possible, but if
+we only consider this, then it would stand still. But if combined, with eg the
+amount of dirt cleaned up, then we could have beter operation.
+
+\subsection{Autonomy}%
+\label{sub:autonomy}
+An autonomous agnet always has the ability to learn and adapt, it can always say
+"no", it also needs enough built-in knowledge to survive.
+
+\paragraph{Task Environment Specification}
+Problem specification:
+\begin{itemize}
+  \item Performace meassure
+  \item Environment
+  \item Actuators
+  \item Sensors
+\end{itemize}
+For a autonomous taxi
+\begin{itemize}
+  \item Performace meassure
+    \subitem Safe, fastm, legal
+  \item Environment
+    \subitem Roads
+  \item Actuators
+    \subitem Steering wheel
+  \item Sensors
+    \subitem Cameras, speedometer
+\end{itemize}
+
+For an email spam filter:
+\begin{itemize}
+  \item Performace meassure
+    \subitem Manimizing false positives
+  \item Environment
+    \subitem User email account
+  \item Actuators
+    \subitem Mark as spam, let mail through
+  \item Sensors
+    \subitem Incoming messages
+\end{itemize}
+
+\subsection{Environment types}%
+\label{sub:environment_types}
+\paragraph{Fully observable vs partially observable}
+In a games, such as FIFA or any game, it is possible to oberserve everything,
+and perceive all options.
+If a robot is playing football in the real world, then the perception of the
+environment is constrained by the input of the sensors eg eyes (you do not know
+what happens behind your back).
+
+\paragraph{Deterministic vs stochastic}
+A deterministic environment is when the coming events in time is only defined
+by the current state, and the agent's future actions. Versus when the game is
+dependent on some type of randomness, whether it be a deck of cards or dice.
+This is very hard to predict.
+
+\paragraph{Episodic vs sequential}
+Is every step of the agent independent? Or does it depend on a previous
+sequence? A sequence could be a game, where current decisions depend on a 
+previous sequence of decisions. In a spam filter the sequence of spam mail does
+not matter.
+This is a matter of defintion, it is how you see your environment in terms of
+your decisions. A game could be episodic, if you choose to look upon it as a
+snapshot.
+
+\paragraph{Static vs dynamic}
+Is the world changing while the agent is thinking. Solving a rubrics cube or
+chess is static. However self-driving is very dynamic, here things are changing
+all the time. This a very challenging 
+
+
+\paragraph{Discrete vs continuous}
+Does the environment provid a fixed number of distinct number of states(can they
+be enumerated)? Where time is a factor, then time is always continuous, if you
+do not choose to look at time in buckets of seconds or minutes.
+
+\paragraph{Single-agent vs multiagent}%
+\label{par:single_agent_vs_multiagent}
+Is the agent operating by itself?
+
+\subsection{Hierarchy of agent types}%
+\label{sub:hieryachy_of_agent_types}
+\begin{itemize}
+  \item Table-driven agents, it's just like a big lookup table. 
+    \subitem The table sizes can become huge. Designing such a table is
+    challenging. We need to think about every single case.
+  \item Simple reflex agent
+    \subitem This is the vacuum cleaner. For every state given the rules, we
+    find the rule applying to the current state. It selects its action from the
+    current percept only. Implemented through condition-action rules. Example of
+    if-then algorithms. For this to work, then the environment must be fully
+    observable. This wont then work for a self-driving car.
+  \item Agents with memory, internal state to keep track of past states of the
+    world
+    \subitem We can call this a model-based reflex agent. Internal state:
+    aspects of the environment that cannot be currently observed. This is useful
+    for partially observable environments.
+    In addition to the rule we have a model, a desripton of how the next state
+    depends on current state and action.
+    We also have a state, a description of the current world state
+    the action, is the most recent action.
+
+    We update the state, according to the state, action, percept and the model.
+    When matching a rule, the we take into account the state and the rules.
+  \item Agents with goals
+    \subitem 
+  \item Utility 
+\end{itemize}
+
+
+\newpage
+\section{22nd of February - Solving Problems Through Search}
+
+Many problems can be solved through search. Which sequence of actions can get us
+to the goal state? This can be solved through search. We might also have a
+performance measure of minimizing time. For an example a GPS is a search
+problem, which sequence of places gets us to the goal? 
+
+A search algorithm will tell us the exact sequence to get us from the start to
+the goal. Search strategies are important methods for many approaches to
+problem-solving. Search algorithms is a basis for many optimization and planning
+methods.
+
+\begin{itemize}
+  \item We need to formulate appropriate problem as search taske 
+    \subitem We need to think about states, initial state, goal state, successor
+    functions (operators), cost. It is about creating a microworld, where the
+    computer understands what is going on.
+  \item Know the fundamental seach strategies and algorithms.
+    \begin{itemize}
+      
+      \item Uninformed search 
+      \subitem breadth-fist, depth-first, uniform-cost,
+      iterative deepening
+      \item Informed search
+      \subitem best-first (greedy, A*)
+    \end{itemize}
+  \item Evaluate the suitabilitu of a search strategy for a problem
+    \subitem Compoleteness, optimality
+\end{itemize}
+
+We will cosider the poroblem of desinging goal-based agen in observale,
+deterministic, discrete, known environments. 
+
+How we solve a comic-book maze.
+\begin{itemize}
+  \item solution fixed sequence of actions 
+  \item Search: process  of looking for the sequence of of actions that reaches
+    the goal
+  \item Agent can ignore percepts during execution.
+\end{itemize}
+
+\paragraph{Formalizing the maze problem}
+
+\begin{itemize}
+  \item Initial state 
+    \subitem Entry 
+  \item Successor Function
+  \item Goal state 
+  \item Path cost
+    \subitem Assume that it is a sum of nonnegative \textit{step costs}.
+  \item Optimal solution: sequence of actions with the lowest path cost.
+\end{itemize}
+
+\paragraph{Vacation in Romania:}
+
+\begin{itemize}
+  \item Initial state
+    \subitem Arad
+  \item Successor function
+    \subitem 
+\end{itemize}
+
+\paragraph{State Space}
+Is the inital state and the succesor function defines the state space of the
+problem. 
+\begin{itemize}
+  \item The set of all states reachable from initial state by any sequence of
+    actions.
+  \item Can represented as a directed graph (nodes are states and linked between
+    nodes are actions).
+\end{itemize}
+
+The state space for vaccum world.
+\begin{itemize}
+  \item Initial state 
+    \subitem Dirty
+  \item Goal state
+    \subitem All clean
+  \item State space.
+    \subitem 
+    \begin{figure}[H]
+      \center
+      \includegraphics[width=0.7\textwidth]{./statespace.pdf}
+    \end{figure}
+  \item Path cost
+    \subitem Could be the sum of the amouth of electricity used
+\end{itemize}
+
+\paragraph{Example: The 8-puzzle}
+The state space of the 8-puzzle has a size of 181440 states. The succesor
+function is the actions of move blank left, right, up, down.
+
+
+To build a goal-based agent, we must answer the questions:
+\begin{itemize}
+  \item How to we represent the state of the world.
+  \item What is the goal and how caan we recongize it?
+\end{itemize}
+
+How to we define the \textbf{Remove 5 sticks} problem?
+
+\subsection{Search Strategies}
+
+\paragraph{Breadth-first}
+The fringe is explored in a first in first out fashion. 
+
+
+
+\newpage
+\section{Lab - Week 7}%
+\label{sec:lab_week_7}
+
+\subsection{TABEL-DRIVEN-AGENT}%
+\label{sub:tabel_driven_agent}
+
+\paragraph{Run the module}
+The program prints:
+
+\paragraph{The percept }
+
+\section{Lab - Week 8}%
+\label{sec:lab_week_8}
+
+\begin{enumerate}
+  \item Successor nodes are inserted at front of the fringe (successor list) as
+    a node is expanded. Is this a breadth (FIFO) or depth-first search (LIFO)?
+    \subitem This is depth-first search. We put the successor node in front, and
+    examine these first.
+
+  \item For goal J, give the fringe (successor list) after expanding each node.
+    \subitem The fringe list, should be empty, when we have found the goal J.
+    However if we just expand the tree, going depth-first with LIFO then we
+    would have: 
+    \begin{center}
+      J I H G F C E D B A 
+    \end{center}
+  \item What is the effect of inserting successor nodes at the end of the fringe
+    as a node is expanded? A depth or breadth-first search?
+    \subitem The effect of this is a breadth-first search.
+  \item For goal J, give the fringe (successor list) after expanding each node
+    \subitem A, B, C, D, E, F , G, H, I, J
+\end{enumerate}
+
+
+\end{document}
+
