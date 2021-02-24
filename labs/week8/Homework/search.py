@@ -109,6 +109,11 @@ def successor_fn(state):  # Lookup list of successor states
                 if item[index] != 'E':
                     children.remove(item) 
  '''   
+    
+    for child_state in children[:]
+        if state.count('E') + 2 < child_state.count('E')  #remove states where more than two have traveled at the same time
+            children.remove(child_state)
+    return children
 
     return children
 
