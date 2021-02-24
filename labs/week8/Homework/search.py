@@ -28,7 +28,7 @@ def TREE_SEARCH():
     fringe = INSERT(initial_node, fringe)
     while fringe is not None:
         node = REMOVE_FIRST(fringe)
-        if node.STATE in GOAL_STATE:
+        if node.STATE == GOAL_STATE:
             return node.path()
         children = EXPAND(node)
         fringe = INSERT_ALL(children, fringe)
@@ -82,29 +82,38 @@ def successor_fn(state):  # Lookup list of successor states
     children = STATE_SPACE[state]  # successor_fn( 'C' ) returns ['F', 'G']
 
     children.remove(state) #the state itself should not be included
+
     illegal_states = [('W', 'W', 'E', 'E'), ('W','E','E','W')]
     for remove_state in illegal_states:
-        children.remove(remove_state)
+        if remove_state in children[:]: 
+            print('remove state')
+            children.remove(remove_state)
+
+    if state[0] == 'E':
+        for item in children[:]:
+            if item[0] != 'W':
+                children.remove(item)
+
+    for index in range(1,4):
+        if state[index] == 'E':
+            for item in children[:]:
+                if item[index] != 'E':
+                    children.remove(item) 
     
     for child_state in children[:]
         if state.count('E') + 2 < child_state.count('E')  #remove states where more than two have traveled at the same time
             children.remove(child_state)
+    return children
 
 
 
 INITIAL_STATE = ('W', 'W', 'W', 'W') #We represent the a state with a tuple: (location, A status, B status)
 GOAL_STATE = ('E', 'E', 'E', 'E') 
-
-from itertools import permutations
-lll = list(permutations(['W', 'E', 'E', 'E'])) + list(permutations(['W', 'W', 'E', 'E'])) + list(permutations(['W', 'W', 'W', 'E'])) + [('W','W','W','W')] + [('E', 'E', 'E', 'E')]
-ll = set(lll)
-lll = list(ll)
+PERMUTATIONS = [('E', 'W', 'W', 'W'), ('W', 'E', 'W', 'E'), ('E', 'W', 'E', 'W'), ('E', 'E', 'E', 'E'), ('E', 'E', 'E', 'W'), ('E', 'E', 'W', 'E'), ('W', 'E', 'W', 'W'), ('W', 'E', 'E', 'E'), ('E', 'W', 'W', 'E'), ('E', 'W', 'E', 'E'), ('W', 'W', 'E', 'E'), ('W', 'W', 'W', 'E'), ('W', 'E', 'E', 'W'), ('E', 'E', 'W', 'W'), ('W', 'W', 'E', 'W'), ('W', 'W', 'W', 'W')]
 
 STATE_SPACE = {}
-for item in lll:
-    removeList = lll[:]
-    removeList.remove(item)
-    STATE_SPACE[item] = removeList
+for item in PERMUTATIONS:
+    STATE_SPACE[item] = PERMUTATIONS
 
 '''
 Run tree search and display the nodes in the path to goal node
@@ -117,5 +126,4 @@ def run():
 
 
 if __name__ == '__main__':
-    print(STATE_SPACE)
-    #run()
+    run()
