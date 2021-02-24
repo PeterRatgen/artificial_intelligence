@@ -32,7 +32,7 @@ def TREE_SEARCH():
             return node.path()
         children = EXPAND(node)
         fringe = INSERT_ALL(children, fringe)
-        print("fringe: {}".format(fringe))
+        #print("fringe: {}".format(fringe))
 
 
 '''
@@ -79,43 +79,59 @@ def REMOVE_FIRST(queue):
 Successor function, mapping the nodes to its successors
 '''
 def successor_fn(state):  # Lookup list of successor states
+    print("state input " + str(state))
     children = STATE_SPACE[state]  # successor_fn( 'C' ) returns ['F', 'G']
+    print("initial children" + str(children))
 
-    illegal_states = [('W', 'W', 'E', 'E'), ('W','E','E','W')] + [state]
+    illegal_states = [('W', 'W', 'E', 'E'), ('W','E','E','W')] + [state] + [INITIAL_STATE]
     for remove_state in illegal_states:
         if remove_state in children[:]: 
             print('remove state' + str(remove_state))
             children.remove(remove_state)
 
-    for STATE in children[:]: #there cannot be more than two on the ferry at once
-        if state.count('W') + 3 < STATE.count('W'):
-            children.remove(STATE)
-            continue
-        '''
-        if state.count('E') + 2 < STATE.count('E'):
-            children.remove(STATE)
-            continue
-        '''
+    for STATE in children[:]: 
+        for i in range(1,4):
+            if state[i] == 'E' and STATE[i] != state[i]: #wolf, goat and cabbage should not travel back
+                print("they should not travelback\n removing state: " + str(STATE) + "\nfrom " + str(children))
+                children.remove(STATE)
+                break
 
-''''
-    if state[0] == 'E':
-        for item in children[:]:
-            if item[0] != 'W':
-                children.remove(item)
+        if not in_list(children, STATE): continue
 
-    for index in range(1,4):
-        if state[index] == 'E':
-            for item in children[:]:
-                if item[index] != 'E':
-                    children.remove(item) 
- '''   
-    
-    for child_state in children[:]
-        if state.count('E') + 2 < child_state.count('E')  #remove states where more than two have traveled at the same time
-            children.remove(child_state)
+        if STATE.count('E') - state.count('E') > 2 : #no more than two subjects can travel at once
+            print("no more than two subjects can travel\n removing state: " + str(STATE) + "\nfrom " + str(children))
+            children.remove(STATE)
+
+        if not in_list(children, STATE): continue
+
+        print("w state count" + str(STATE.count('W') - state.count('W')))
+        if STATE.count('W') - state.count('W') not in [-2, 1]:
+            if state.count == STATE.count:
+                children.remove(STATE)
+
+
+        if not in_list(children, STATE): continue
+
+        if state[0] == 'E':
+            for i in range(1,4):
+                if state[i] != STATE[i]:
+                    print("farmer needs to be on west side to travel\n removing state: " + str(STATE) + "\nfrom " + str(children))
+                    children.remove(STATE)
+                    break
+
+        if not in_list(children, STATE): continue
+
+        for i in range(1,4): #if an object travels it must be with the farmer
+            if state[i] != STATE[i] and STATE[0] == 'W':
+                children.remove(STATE)
+                break;
+
+    print("children: " +  str(children))
     return children
 
-    return children
+def in_list(probe_list, STATE):
+    if STATE in probe_list:
+        return True
 
 
 INITIAL_STATE = ('W', 'W', 'W', 'W') #We represent the a state with a tuple: (location, A status, B status)
@@ -124,7 +140,7 @@ PERMUTATIONS = [('E', 'W', 'W', 'W'), ('W', 'E', 'W', 'E'), ('E', 'W', 'E', 'W')
 
 STATE_SPACE = {}
 for item in PERMUTATIONS:
-    STATE_SPACE[item] = PERMUTATIONS
+    STATE_SPACE[item] = PERMUTATIONS[:]
 
 '''
 Run tree search and display the nodes in the path to goal node
