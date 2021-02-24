@@ -81,14 +81,23 @@ Successor function, mapping the nodes to its successors
 def successor_fn(state):  # Lookup list of successor states
     children = STATE_SPACE[state]  # successor_fn( 'C' ) returns ['F', 'G']
 
-    children.remove(state) #the state itself should not be included
-
-    illegal_states = [('W', 'W', 'E', 'E'), ('W','E','E','W')]
+    illegal_states = [('W', 'W', 'E', 'E'), ('W','E','E','W')] + [state]
     for remove_state in illegal_states:
         if remove_state in children[:]: 
-            print('remove state')
+            print('remove state' + str(remove_state))
             children.remove(remove_state)
 
+    for STATE in children[:]: #there cannot be more than two on the ferry at once
+        if state.count('W') + 3 < STATE.count('W'):
+            children.remove(STATE)
+            continue
+        '''
+        if state.count('E') + 2 < STATE.count('E'):
+            children.remove(STATE)
+            continue
+        '''
+
+''''
     if state[0] == 'E':
         for item in children[:]:
             if item[0] != 'W':
@@ -99,9 +108,9 @@ def successor_fn(state):  # Lookup list of successor states
             for item in children[:]:
                 if item[index] != 'E':
                     children.remove(item) 
-    
-    return children
+ '''   
 
+    return children
 
 
 INITIAL_STATE = ('W', 'W', 'W', 'W') #We represent the a state with a tuple: (location, A status, B status)
