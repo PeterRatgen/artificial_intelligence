@@ -83,7 +83,7 @@ def successor_fn(state):  # Lookup list of successor states
     children = STATE_SPACE[state]  # successor_fn( 'C' ) returns ['F', 'G']
     print("initial children" + str(children))
 
-    illegal_states = [('W', 'W', 'E', 'E'), ('W','E','E','W')] + [state] + [INITIAL_STATE]
+    illegal_states = [state] + [INITIAL_STATE]
     for remove_state in illegal_states:
         if remove_state in children[:]: 
             print('remove state' + str(remove_state))
@@ -95,6 +95,11 @@ def successor_fn(state):  # Lookup list of successor states
                 print("they should not travelback\n removing state: " + str(STATE) + "\nfrom " + str(children))
                 children.remove(STATE)
                 break
+            if (STATE[1] == STATE[2] and STATE[0] != STATE[1]) or (STATE[2] == STATE[3] and STATE[0] != STATE[2]):
+                print("they cannot be on same " + str(STATE))
+                children.remove(STATE)
+                break
+
 
         if not in_list(children, STATE): continue
 
@@ -104,11 +109,11 @@ def successor_fn(state):  # Lookup list of successor states
 
         if not in_list(children, STATE): continue
 
+        '''
         print("w state count" + str(STATE.count('W') - state.count('W')))
-        if STATE.count('W') - state.count('W') not in [-2, 1]:
-            if state.count == STATE.count:
-                children.remove(STATE)
-
+        if STATE.count('W') - state.count('W') not in [-2, -1, 1, 2]:
+            children.remove(STATE)
+        '''
 
         if not in_list(children, STATE): continue
 
