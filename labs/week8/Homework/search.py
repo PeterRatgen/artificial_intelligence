@@ -32,7 +32,7 @@ def TREE_SEARCH():
             return node.path()
         children = EXPAND(node)
         fringe = INSERT_ALL(children, fringe)
-        #print("fringe: {}".format(fringe))
+        print("fringe: {}".format(fringe))
 
 
 '''
@@ -79,22 +79,13 @@ def REMOVE_FIRST(queue):
 Successor function, mapping the nodes to its successors
 '''
 def successor_fn(state):  # Lookup list of successor states
-    print("enter state " + str(state))
     children = STATE_SPACE[state][:]  # successor_fn( 'C' ) returns ['F', 'G']
 
-    illegal_states = [state]# remove the state in question and the initial state
-    for remove_state in illegal_states:
-        if remove_state in children[:]: 
-            children.remove(remove_state)
+    children.remove(state) # the state in question is removed
 
     problem_constraints(children)
-
     check_amount_of_travelers(state, children)
-
     check_farmer_place(state, children)
-
-    print("Return children")
-    print(str(children))
 
     return children
 
@@ -109,49 +100,28 @@ def problem_constraints(child_states):
                 break
 
 def check_amount_of_travelers(state, child_states):
-    for STATE in child_states[:]:  
-        travellers = 0
-        if STATE[0] == 'W' and state[0] == 'E':
+    for STATE in child_states[:]:
+        if state[0] != STATE[0]: # if the farmer has traveled
+            travellers = 0
             for i in range(1,4):
-                if state[i] == 'W' and STATE[i] == 'E':
-                    print("removing oppsite " + str(state) + " " + str(STATE))
-                    child_states.remove(STATE)
-                    break
-                if state[i] != STATE[i]:
-                    travellers += 1 
-                    child_states.remove(STATE)
-                    break
-
-        if STATE[0] == 'E' and state[0] == 'W': 
+                if state[i] != STATE[i]: # if a subject has traveled
+                    travellers += 1
+            if travellers > 1: #no more than one subject can travel
+                child_states.remove(STATE)
+        else:
             for i in range(1,4):
-                if state[i] == 'E' and STATE[i] == 'W':
-                    travellers += 1 
-                    print("removing oppsite " + str(state) + " " + str(STATE))
+                if state[i] != STATE[i]: #if subject has traveled without the farmer
                     child_states.remove(STATE)
                     break
-                if state[i] != STATE[i]:
-                    travellers += 1 
-                    child_states.remove(STATE)
-                    break
-        print("travellers: " + str(travellers))
-        if travellers > 1:
-            print("remove multiple travellers: " + str(STATE))
-            child_states.remove(STATE)
-
         
 def check_farmer_place(state, child_states):
-    for STATE in child_states[:]:  
-        if state[0] == 'E': #if farmer is on east$ side, the subjects can't travel
-            for i in range(1,4):
-                if state[i] != STATE[i]:
+    for STATE in child_states[:]:
+        for i in range(1,4):
+            if state[i] != STATE[i]: #if subject has traveled
+                if STATE[i] != STATE[0]: # if subject has travled with farmer
                     child_states.remove(STATE)
                     break
-    for STATE in child_states[:]:  
-        if STATE[0] == 'W': #if farmer stays on west side, no subjects can travel
-            for i in range(1,4): 
-                if state[i] != STATE[i]:
-                    child_states.remove(STATE)
-                    break
+
 
 INITIAL_STATE = ('W', 'W', 'W', 'W') #We represent the a state with a tuple: (location, A status, B status)
 GOAL_STATE = ('E', 'E', 'E', 'E') 
