@@ -90,6 +90,9 @@ def successor_fn(state):  # Lookup list of successor states
     return children
 
 def problem_constraints(child_states):
+    """
+        Checks the child states for violations of problem constraints
+    """
     for STATE in child_states[:]:  
         for i in range(1,4):
             if STATE[1] == STATE[2] and STATE[2] != STATE[3] and STATE[0] != STATE[1]: # the wolf and the goat cannot be alone and goat and cabbage cannot be alone
@@ -100,6 +103,10 @@ def problem_constraints(child_states):
                 break
 
 def check_amount_of_travelers(state, child_states):
+    """
+        Checks the amount of travellers in the boat, and if the subjects have travelled without
+        the farmer travelling.
+    """
     for STATE in child_states[:]:
         if state[0] != STATE[0]: # if the farmer has traveled
             travellers = 0
@@ -115,6 +122,9 @@ def check_amount_of_travelers(state, child_states):
                     break
         
 def check_farmer_place(state, child_states):
+    """
+        Checks if the subjects have travelled with the farmer 
+    """
     for STATE in child_states[:]:
         for i in range(1,4):
             if state[i] != STATE[i]: #if subject has traveled
