@@ -492,6 +492,42 @@ The fringe is explored in a first in first out fashion.
 
 
 \newpage
+
+\section{1. March - Informed Search}%
+\label{sec:1_march_informed_search}
+
+\section{8. March - Local Search}
+We can formulate problems in terms of optimization. We do not care about the
+path to a solution. We have an objective function that us about the quailt of a
+possible solution, and we want to find a good solution by minimizing or
+maximizing the value of the function.
+
+There is three approaches to local search.
+
+\subsection{Hill-climbing (greedy) search}
+Here the crux is: keep a single "current state" and try to locally improve it.
+You can like it to "climbing mount Everest in thick fog with amnesia".
+
+If we look at a puzzle, it should be 1, 2, 3, 4, 5, 6, 7, 8 going in a clockwise
+circle our function is $$f(n) = -(\text{number of tiles out of place})$$.
+We want to find the best solution, the one closest to what we think we want.
+
+In each iteration we probe, for which move increases our evaluation function.
+It can get stuck in a local optimum.
+
+\subsection{Simulated annealing search}
+The hill-climbing will be never go down the hill of global and local maxima. 
+The idea is to escape local maxiam by allowing some "bad" moved but gradually
+decrease the frequency of these bad moves.
+\begin{itemize}
+  \item Probability of takeing downhill move decreases with number of
+    iterations, steepness of downhill move
+  \item Controlled by annealing schedule 
+\end{itemize}
+Inspired by annealing process, as part of the tempering of glass, metal.
+
+
+
 \section{Lab - Week 7}%
 \label{sec:lab_week_7}
 
@@ -525,6 +561,10 @@ The program prints:
   \item For goal J, give the fringe (successor list) after expanding each node
     \subitem A, B, C, D, E, F , G, H, I, J
 \end{enumerate}
+
+\section{Lab - Week 9}%
+\label{sec:lab_week_9}
+
 
 
 \end{document}
