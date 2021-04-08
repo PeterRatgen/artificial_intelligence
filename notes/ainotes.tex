@@ -1,7 +1,7 @@
 \documentclass{article}
 
-\usepackage[latin1]{inputenc}
-\usepackage[danish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 \usepackage{float}
 \usepackage{fancyhdr}
 \usepackage{amsmath}
@@ -11,8 +11,12 @@
 \usepackage{pdfpages}
 \usepackage{booktabs}
 \usepackage{listingsutf8}
-%\usepackage{enumitem}
 \usepackage[a4paper, top = 1in, bottom = 1in, left=1.5in,right=1.5in]{geometry}
+\usepackage[backend=biber, citestyle=ieee]{biblatex}
+\usepackage{csquotes}
+\usepackage{hyperref}
+
+\bibliography{ai.bib}
 
 \title{Notes for AI}
 \author{Peter Heilbo Ratgen}
@@ -31,6 +35,7 @@ The course is an introduction to the basics of Artificial Intelligence. We will
 get an overview of the base of the artificial intelligence methods. We will use
 python as a programming language. Labs and support will be done in python.
 Prerequisite to the exam is to complete the homework of the lectures.
+\cite{book:artificial_intelligence_modern_approach}
 
 You should help each other, but coding should be done individually.
 \begin{itemize}
@@ -537,21 +542,20 @@ Inspired by annealing process, as part of the tempering of glass, metal.
 \section{Week 15 - Probability}%
 \label{sec:12_march_probability}
 
+\newpage
 \section{Week 16 - Bayesian Networks}%
 \label{sec:20_march_bayesian_networks}
 
+\newpage
 \section{Week 17 - Hidden Markov Models}%
 \label{sec:27_march_hidden_markov_models}
 
+\newpage
 \section{Week 18 - Intro to Machine Learning}%
 \label{sec:}
 
-
-
-
-
-
-\section{Lab - Week 7}%
+\newpage
+\section{Lab 1 - Week 7}%
 \label{sec:lab_week_7}
 
 \subsection{TABEL-DRIVEN-AGENT}%
@@ -562,7 +566,8 @@ The program prints:
 
 \paragraph{The percept }
 
-\section{Lab - Week 8}%
+\newpage
+\section{Lab 2 - Week 8}%
 \label{sec:lab_week_8}
 
 \begin{enumerate}
@@ -585,10 +590,25 @@ The program prints:
     \subitem A, B, C, D, E, F , G, H, I, J
 \end{enumerate}
 
-\section{Lab - Week 9}%
+\newpage
+\section{Lab 3 - Week 9}%
 \label{sec:lab_week_9}
 
 
+\newpage
+\section{Lab 4 - Week 10}
+
+
+
+\newpage
+\section{Lab 5 - Week 11}
+
+
+\newpage
+\section{Lab 6 - Week 12}
+
+\newpage
+\printbibliography
 
 \end{document}
 
