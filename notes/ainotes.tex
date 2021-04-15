@@ -15,6 +15,7 @@
 \usepackage[backend=biber, citestyle=ieee]{biblatex}
 \usepackage{csquotes}
 \usepackage{hyperref}
+\usepackage{enumitem}
 
 \bibliography{ai.bib}
 
@@ -23,6 +24,7 @@
 \date{\today}
 
 \hfuzz=80pt
+
 
 \begin{document}
 \maketitle
@@ -385,91 +387,113 @@ Is the agent operating by itself?
 
 \section{Week 8 - Uninformed Search}
 
+\subsection{Formulating search problems}%
+\label{sub:formulating_search_problems}
+
 Many problems can be solved through search. Which sequence of actions can get us
 to the goal state? This can be solved through search. We might also have a
 performance measure of minimizing time. For an example a GPS is a search
 problem, which sequence of places gets us to the goal?
-\cite{presentation:solving_problems_by_searching}
+\cite[p. 2]{presentation:solving_problems_by_searching}
+
+There can be many different examples of using search as a solution to a problem.
+Examples are getting somewhere, we can formulate the problem as:
+\begin{itemize}
+  \item Start: home
+  \item Goal: destination
+  \item operators: move one block, turn
+\end{itemize}
+
+
+We can also formulate getting settled in a new apartment as a search problem.
+\begin{itemize}
+  \item start: item randomly distributed over the place
+  \item goal: satisfactory arrangement of items
+  \item operators: select item, move item
+\end{itemize}
+
+\subsubsection{Searching}%
+\label{ssub:search}
 
 A search algorithm will tell us the exact sequence to get us from the start to
 the goal. Search strategies are important methods for many approaches to
 problem-solving. Search algorithms is a basis for many optimization and planning
 methods.
 
-\begin{itemize}
-  \item We need to formulate appropriate problem as search taske 
-    \subitem We need to think about states, initial state, goal state, successor
-    functions (operators), cost. It is about creating a microworld, where the
-    computer understands what is going on.
-  \item Know the fundamental seach strategies and algorithms.
-    \begin{itemize}
-      
-      \item Uninformed search 
-      \subitem breadth-fist, depth-first, uniform-cost,
-      iterative deepening
-      \item Informed search
-      \subitem best-first (greedy, A*)
-    \end{itemize}
-  \item Evaluate the suitabilitu of a search strategy for a problem
-    \subitem Compoleteness, optimality
-\end{itemize}
-
-We will consider the problem of designing goal based agent in observable,
-deterministic, discrete, known environments. 
+We will consider the problem of designing goal based agent in observable (the
+agent always knows the current state), deterministic (that each action we take
+has exactly one outcome), discrete (that we have finite number of actions to
+choose from), known (such that the agent knows which states are reached by each
+action) environments\cite[p. 66]{book:artificial_intelligence_modern_approach}. 
 
 How we solve a comic-book maze.
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item solution fixed sequence of actions 
   \item Search: process  of looking for the sequence of of actions that reaches
     the goal
   \item Agent can ignore percepts during execution.
 \end{itemize}
 
-\paragraph{Formalizing the maze problem}
+\paragraph{The maze problem}
 
-\begin{itemize}
+To solve a maze by searching we examine the components of a search problem.
+\cite[p. 8]{presentation:solving_problems_by_searching}
+
+\begin{itemize}[noitemsep]
   \item Initial state 
     \subitem Entry 
   \item Successor Function
+    \subitem Is the result of the doing an action in a state
   \item Goal state 
+    \subitem Goal state is the exit.
   \item Path cost
     \subitem Assume that it is a sum of nonnegative \textit{step costs}.
   \item Optimal solution: sequence of actions with the lowest path cost.
 \end{itemize}
 
-\paragraph{Vacation in Romania:}
+The optimal solution is the sequence of actions with the \textit{lowest path
+cost} for reaching the goal.
 
-\begin{itemize}
+\paragraph{Vacation in Romania} 
+We are on vacation in Romania, currently we are placed in Arad. However our flight
+leaves Bucharest tomorrow. Now we want to find the best way to get to Bucharest.
+
+\begin{itemize}[noitemsep]
   \item Initial state
     \subitem Arad
-  \item Successor function
-    \subitem 
+  \item Successor function 
+    \subitem These are the possible states we can move to $S(\text{Arad}) = \{\text{Zerind}, \text{Timisoara}, \text{Sibiu}\}$
+  \item Goal state
+    \subitem Bucharest
+  \item Path cost
+    \subitem The cost of the path from the start to the goal, is the sum of edge
+    costs.
 \end{itemize}
+
+We find the graph on \cite[p. 9]{presentation:solving_problems_by_searching}.
 
 \paragraph{State Space}
-Is the inital state and the succesor function defines the state space of the
-problem. 
-\begin{itemize}
-  \item The set of all states reachable from initial state by any sequence of
-    actions.
-  \item Can represented as a directed graph (nodes are states and linked between
-    nodes are actions).
-\end{itemize}
+Is the initial state, actions and the successor function (or transition model)
+defines the state space of the problem.  The set of all states reachable from
+initial state by any sequence of actions.  This can be represented as a directed
+graph (nodes are states and the edge between nodes are actions).  
 
-The state space for vaccum world.
-\begin{itemize}
+We can define a state for the vaccum world:
+\begin{itemize}[noitemsep]
   \item Initial state 
     \subitem Dirty
   \item Goal state
     \subitem All clean
-  \item State space.
+  \item State space:
     \subitem 
     \begin{figure}[H]
       \center
       \includegraphics[width=0.7\textwidth]{./statespace.pdf}
+      \caption{The state space of the vacuum cleaner world}
     \end{figure}
   \item Path cost
-    \subitem Could be the sum of the amouth of electricity used
+    \subitem Could be the sum of the amount of electricity used, or any other
+    type of utility function.
 \end{itemize}
 
 \paragraph{Example: The 8-puzzle}
