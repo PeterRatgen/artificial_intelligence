@@ -426,6 +426,26 @@ has exactly one outcome), discrete (that we have finite number of actions to
 choose from), known (such that the agent knows which states are reached by each
 action) environments\cite[p. 66]{book:artificial_intelligence_modern_approach}. 
 
+
+\paragraph{State Space}
+Is the initial state, actions and the successor function (or transition model)
+defines the state space of the problem.  The set of all states reachable from
+initial state by any sequence of actions.  This can be represented as a directed
+graph (nodes are states and the edge between nodes are actions).  
+
+\paragraph{Building a goal based agent}
+
+To build a goal based agent, we must answer the questions\cite[p.
+15]{presentation:solving_problems_by_searching}:
+\begin{itemize}
+  \item How to we represent the state of the world?
+  \item What is the goal and how can we recognize it?
+  \item What \textit{relevant} information do we encode to describe states,
+    action and therir effects aand thereby solve the problem.
+\end{itemize}
+
+\subsection{Examples of search problems}
+
 How we solve a comic-book maze.
 \begin{itemize}[noitemsep]
   \item solution fixed sequence of actions 
@@ -472,12 +492,7 @@ leaves Bucharest tomorrow. Now we want to find the best way to get to Bucharest.
 
 We find the graph on \cite[p. 9]{presentation:solving_problems_by_searching}.
 
-\paragraph{State Space}
-Is the initial state, actions and the successor function (or transition model)
-defines the state space of the problem.  The set of all states reachable from
-initial state by any sequence of actions.  This can be represented as a directed
-graph (nodes are states and the edge between nodes are actions).  
-
+\paragraph{Vaccum-cleaner world}
 We can define a state for the vaccum world:
 \begin{itemize}[noitemsep]
   \item Initial state 
@@ -497,26 +512,142 @@ We can define a state for the vaccum world:
 \end{itemize}
 
 \paragraph{Example: The 8-puzzle}
-The state space of the 8-puzzle has a size of 181440 states. The succesor
-function is the actions of move blank left, right, up, down.
+The state space of the 8-puzzle has a size of 181440 states. The successor
+function is the actions of move blank left, right, up, down. The optimal
+solution is NP-hard\cite[p. 17]{presentation:solving_problems_by_searching}.
 
-
-To build a goal-based agent, we must answer the questions:
+\paragraph{Example: The 8-queens problem}
+On chessboard 8 queens are placed. We must place the queens, such that no other
+queen can attack each other. 
 \begin{itemize}
-  \item How to we represent the state of the world.
-  \item What is the goal and how caan we recongize it?
+  \item State space: Is the chessboard
+  \item Successor function: depends on how you want to formalize it. It could be
+    moving one piece in a direction, such that you have a different
+    configuration.
+  \item Goal state: Check if any queen is on the same row, column or diagonal.
 \end{itemize}
 
-How to we define the \textbf{Remove 5 sticks} problem?
+\paragraph{Example: Remove 5 sticks}
+Remove exactly 5 of the 17 stick such that the result forms 3
+squares \cite[p. 18]{presentation:solving_problems_by_searching}.
 
-\subsection{Search Strategies}
+\begin{itemize}
+  \item States: 
+  \item Initial state: The initial state is the state presented with all the
+    sticks laid out, and having the 6 squares.
+  \item Successor function: Picking up any stick from the board.
+  \item Goal test: Check if the remaining sticks form the 3 squares, we need to
+    have a function for that.
+  \item Path cost: It cost one to remove a stick.
+\end{itemize}
 
-\paragraph{Breadth-first}
-The fringe is explored in a first in first out fashion. 
+
+\subsection{Tree search}
+
+We expand at the root node(which is the starting state). As we go about
+expanding the tree of the search, we maintain a list of unexpanded nodes. This
+we call the fringe. For each iteration we expand a node we pick from the fringe.
+We keep expanding until we reach the goal state. Our \textbf{goal} is to expand
+as few states as possible. This is the case as it takes time and can fill up the
+memory of the computer.
+
+An important point is to that \emph{nodes and states} are not the same. A state
+is a representation of a physical configuration, while a node is a data
+structure that is par of the search tree\cite[p.
+19]{presentation:solving_problems_by_searching}
+
+A tree search algorithm works in the following way:
+\begin{enumerate}
+  \item Initialize the fringe with the starting state
+  \item As long a the fringe is not empty:
+    \begin{enumerate}
+      \item Choose a fringe node to expand
+      \item If the node contains the goal state, then return that solution
+      \item If not, expand the node and add the children of this node to the
+        fringe.
+    \end{enumerate}
+  \item If we reach the end, terminate having found no solution.
+\end{enumerate}
+We keep an explored set of the node we already have visited, a node is added to
+this everytime we expand it. When we add a node to the fringe, then we check if
+it exists, with a higher path cost. If this is the case, then replace it.
+
+\subsection{Search strategies}%
+\label{ssub:search_strategies}
+
+A search strategy is defined by the order in which we pick which node to expand
+from the fringe. We have some different parameters by, which to judge a search
+strategy:
+\begin{itemize}[noitemsep]
+  \item Completeness
+    \subitem Does it find a solution if it exists?
+  \item Optimality
+    \subitem Does it find the cheapest solution?
+  \item Time complexity
+    \subitem This represents the number of the node generated aka the time it
+    take to run.
+  \item Space complexity
+    \subitem How many nodes are in memory?
+\end{itemize}
+We can measure the time and space complexity in terms of:
+\begin{itemize}
+  \item $b$: maximum branching factor of the search tree
+  \item $d$: depth of the least cost (cheapest) solution.
+  \item $m$: maximum length of any path in the state space (could be unbounded).
+\end{itemize}
+
+\subsubsection{Breadth-first search}%
+\label{par:breadth_first_search}
+We expand the shallowest node, such that we search in the breath of the tree.
+This is done by the fringe being made as a first in-first out queue. Such each
+node that we expand, goes to the end of the fringe list.
+
+\begin{description}
+  \item[Compleness] Yes
+  \item[Optimality] Yes - if the cost is 1 for each step.
+  \item[Time complexity] Number of node in a $b$-ary tree of depth $d$: the
+    complexity is $O(b^d)$. Where $d$ is the depth of the optimal solution.
+  \item[Space complexity] $O(b^d)$
+\end{description}
+
+\subsubsection{Depth-first search}%
+\label{par:depth_first_search}
+We expand the deepest node first, such that we traverse the depth of the tree,
+before visiting node higher up. This is done as a last-in-first-out queue.
+
+\begin{description}
+  \item[Compleness] Cannot deal with infinte depths, and space with loops. We be
+    complete in finite space, if repeats are excluded from the list of visited
+    nodes.
+  \item[Optimality] No - it returns the first solution that it finds.
+  \item[Time complexity] At depth $m$: $O(b^m)$.
+  \item[Space complexity] $O(bm)$
+\end{description}
+
+\subsubsection{Iterative deepening search}%
+\label{par:iterative_deepening_search}
+This is a mix of depth first, and breadth-first. We first examine the tree in a
+depth-first with the depth of 1 (we cut off node on level 2 and below). If we do
+not find out solution we run again with a depth of 2. We again search in a depth
+first-fashion. It is like having a depth-first approach, but find an optimal
+solution. This way we cannot fall into infinte loops.
+
+
+\subsubsection{Uniform-cost search}%
+\label{par:uniform_cost_search}
+We organise the fringe such that all node are sorted according to the cost. Such
+that when we expand the root node, then its children B (cost 5) and D (cost 3)
+are sorted in the order D, B. We then go on to expand D.
+
+Note that \cite[p. 33]{presentation:solving_problems_by_searching} says that we
+should keep expanding nodes in the fringe until we are about to expand the goal
+node, and we should \textbf{not} stop when encountering it. Because there might
+a hidden better solution in the last unexpanded nodes.
 
 
 
 \newpage
+
 
 
 \section{Week 9 - Informed Search}%
