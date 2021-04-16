@@ -17,6 +17,9 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 
+\newtheorem{definition}{Definition}[section]
+
+
 \bibliography{ai.bib}
 
 \title{Notes for AI}
@@ -490,7 +493,14 @@ leaves Bucharest tomorrow. Now we want to find the best way to get to Bucharest.
     costs.
 \end{itemize}
 
-We find the graph on \cite[p. 9]{presentation:solving_problems_by_searching}.
+\begin{figure}[h]
+  \centering
+  \includegraphics[page=9,
+  width=0.8\textwidth]{../presentations/w8_lec03_search_intro_2021.pdf}
+  \label{fig:the_romania_problem}
+  \caption{The Romania problem \cite[p.
+  9]{presentation:solving_problems_by_searching}}
+\end{figure}
 
 \paragraph{Vaccum-cleaner world}
 We can define a state for the vaccum world:
@@ -652,11 +662,110 @@ a hidden better solution in the last unexpanded nodes.
 
 \section{Week 9 - Informed Search}%
 \label{sec:1_march_informed_search}
-The idea of informed search is to give the algorithm hints about the deirability
+The idea of informed search is to give the algorithm hints about the desirability
 of different states. Here we can use an evaluation function to rank node and
-select the most promising one for expansion.
+select the most promising one for expansion. In this way can find the solution
+(goal) more efficiently, than just using uninformed search\cite[p.
+92]{book:artificial_intelligence_modern_approach}.
 
+We remember from the uniform-cost search, picking the best node (or the most
+promising node) to expand first. This we call best-first search, where use a
+evaluation function $f(n)$.
+\begin{definition}
+An \textbf{evaluation function } is a cost estimate, the evaluation function defines our
+search strategy (which node we pick first).
+\end{definition}
 
+\paragraph{Heuristic function}%
+\label{par:heuristic_function}
+
+\begin{definition}
+  A \textbf{heuristic function} $h(n)$ estimates the cost of reaching a goal
+  from node $n$. The heuristic function is a type of evaluation function, that
+  is often used in best-first search.
+\end{definition}
+
+As an example we can use the heuristic function in the Romaina problem.
+Presented here with the heuristics:
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth,
+  page=4]{../presentations/w9_lec04_informed_search_sanja_2021.pdf}
+  \caption{Heuristics for the Romania problem}%
+  \label{fig:romania_problem_heuristics}
+\end{figure}
+
+Figure \ref{fig:romania_problem_heuristics} shows the straight line distance
+from the town to Bucharest. This is not equal to the shortest distance on the
+graph. The heuristic is merely to inform our descisions in the heuristic
+function $h(n)$, when deciding which node to expand.
+
+\subsection{Informed Search Algorithms}%
+\label{sub:informed_search_algorithms}
+
+There multiple types for informed search algorithms. In this section we outline
+these search algorithms.
+
+\subsubsection{Greedy best-first search}%
+\label{ssub:greedy_best_first_search}
+Using the greedy best-first search algorithm we expand the node, which has the
+\emph{lowest value} of the heuristic function $h(n)$.
+
+\paragraph{Properties}%
+\label{par:properties}
+
+The greedy-best first search has some properties and pitfalls. The greedy
+best-first is \textbf{not complete} as it can get stuck in loops, where it jumps
+between two nodes, with a lower value than the two it jumps between. It is
+\textbf{not optimal} as it can make some not optimal descisions. As an example
+it will make the journey to Bucharest in the order: Arad, Sibiu, Fagaras,
+Bucharest, while the more optimal solution is: Arad, Sibiu, Rummucu Vilcea,
+Pitesti, Bucharest. The \textbf{time complexity}  the worst case is: $O(b^m)$,
+and best case is $O(bd)$ is the heuristic function is 100\% accurate\cite[p.
+12]{presentation:informed_search}.
+
+\subsubsection{A* search}%
+\label{ssub:a_search}
+
+As the greedy best-first search is flawed, we can change the \emph{evaluation
+function} $f(n)$. We want to change the evaluation function $f(n)$ to more
+accurately represent the estimated total cost of the path from the node $n$ to
+the goal.
+\begin{definition}
+  We define A* where:
+  $$f(n) = g(n) + h(n)$$
+\end{definition}
+\begin{itemize}
+  \item $g(n)$: cost of getting to $n$, the path cost.
+  \item $h(n)$: estimated cost from $n$ to the goal, this is our heuristic.
+\end{itemize}
+
+The algorithm is identical to uniform-cost, it just uses $g(n) + h(n)$ instead
+of just $g(n)$\cite[p. 93]{book:artificial_intelligence_modern_approach}.
+
+\begin{definition}
+  An \textbf{admissible heuristic} never overestimates the cost to reach the
+  goal (it is optimistic). 
+\end{definition}
+An example of an admissible heuristic is using the straight line distance from
+$n$ to the goal. This is the case because the straight line distance is always
+\emph{less} than the true distance to get somewhere. If $h(n)$ is admissible,
+then \textbf{A* is optimal}\cite[p. 21]{presentation:informed_search}.
+A* is optimally efficient, no other tree-based algorithm that use the same
+heuristic can expand fewer nodes and still be guaranteed to find the optimal
+solution.
+
+\subsection{Designing a Heuristic Function}%
+\label{sub:designing_a_heuristic_function}
+
+We look at getting a heuristic function for the 8-puzzle.
+\begin{itemize}
+  \item $h_1(n)$: number of misplaced tiles.
+  \item $h_2(n)$: total Manhattan distance of the tiles form their goal
+    positions
+\end{itemize}
+
+We now want to determine if the heuristics $h_1$ and $h_2$ are admissible.
 
 
 \newpage
