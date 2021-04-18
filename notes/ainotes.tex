@@ -700,6 +700,8 @@ from the town to Bucharest. This is not equal to the shortest distance on the
 graph. The heuristic is merely to inform our descisions in the heuristic
 function $h(n)$, when deciding which node to expand.
 
+
+
 \subsection{Informed Search Algorithms}%
 \label{sub:informed_search_algorithms}
 
@@ -765,7 +767,28 @@ We look at getting a heuristic function for the 8-puzzle.
     positions
 \end{itemize}
 
-We now want to determine if the heuristics $h_1$ and $h_2$ are admissible.
+We now want to determine if the heuristics $h_1$ and $h_2$ are admissible. The
+results of this is for a goal state:
+\begin{itemize}
+  \item $h_1(start) = 8$
+  \item $h_2(start) = 3+1+2+2+2+3+3+2 = 18$
+\end{itemize}
+
+The results of the two heuristics is less than the actual cost, thus the
+heuristics are optimistic, and this they are admissible.
+
+\begin{definition}
+  A \textbf{dominant heuristic} the heuristic which dominates the other in A*
+  search. This is the case if $h_2(n) \geq h_1(n)$ for all $n$.
+\end{definition}
+
+\paragraph{Heuristics from relaxed problems}%
+\label{par:heuristics_from_relaxed_problems}
+
+\begin{definition}
+A \textbf{relaxed problem} is a problem with fewer restrictions on the actions.
+\end{definition}
+
 
 
 \newpage
