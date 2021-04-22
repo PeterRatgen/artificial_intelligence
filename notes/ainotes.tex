@@ -789,6 +789,46 @@ heuristics are optimistic, and this they are admissible.
 A \textbf{relaxed problem} is a problem with fewer restrictions on the actions.
 \end{definition}
 
+The optimal cost to nodes in the relaxed problem is an admissible heuristic for
+the original problem. An example of a relaxed heuristic is the 8-puzzle is
+relaxed such that a tile can move anywhere on the board, then $h_1(n)$ gives the
+shortest solution (a tile's shortest path to its right place). We can also relax
+the rules of the game, such that a tile can move to any adjacent squares, then
+$h_2(n)$ give the shortest solution.
+
+Looking at the typical search cost for the 8-puzzle (average number of nodes
+expanded for different solution depths). 
+
+If the solution has a depth $d$ of $d = 12 $. Then:
+\begin{itemize}
+  \item $IDS = 3644035$ nodes
+  \item $A*(h_1) = 227 $ nodes
+  \item $A*(h_2) = 73$ nodes
+\end{itemize}
+
+If the solution has a depth $d$ of $d = 24 $. Then:
+\begin{itemize}
+  \item $IDS = 54,000,000,000$ nodes
+  \item $A*(h_1) = 39,135 $ nodes
+  \item $A*(h_2) = 1,641$ nodes
+\end{itemize}
+
+So there is a clear benefit to choosing the right heuristic\cite[p.
+31]{presentation:informed_search}. 
+
+However if there is no dominant heuristic and we have a collection of admissible
+heuristics $h_1(n),h_2(n), \dots , h_m(n)$. Then we can combine them with:
+\[h(n) = \max\{h_1(n),h_2(n), \dots , h_m(n) \}\]
+
+\subsection{Weighted A* search}%
+\label{sub:weighted_a_search}
+
+The idea of weighted A* search is to speed up the search at the expense of
+optimality. So we take an admissible heuristic, and inflate it by $\alpha > 1$,
+and then person the A* search as usual. By using this approach we expand fewer
+nodes, but we might not reach the solution in the most optimal way. The cost
+will be at most $\alpha$.
+
 
 
 \newpage
