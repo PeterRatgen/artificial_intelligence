@@ -1,9 +1,10 @@
 class Node:  # Node has only PARENT_NODE, STATE, DEPTH
-    def __init__(self, state, heuristic=100, parent=None, depth=0):
+    def __init__(self, state, heuristic=0, parent=None, depth=0):
         self.STATE = state
         self.HEURISTIC = heuristic
         self.PARENT_NODE = parent
         self.DEPTH = depth
+        self.PATH_COST = 0
 
     def path(self):  # Create a list of nodes from the root to this node.
         current_node = self
@@ -17,7 +18,7 @@ class Node:  # Node has only PARENT_NODE, STATE, DEPTH
         print(self)
 
     def __repr__(self):
-        return 'State: ' + str(self.STATE) + ' - Depth: ' + str(self.DEPTH) + ' - Heuristic: ' + str(self.HEURISTIC)
+        return 'State: ' + str(self.STATE) + ' - Depth: ' + str(self.DEPTH) + ' - Heuristic: ' + str(self.HEURISTIC) + ' - Path cost ' + str(self.PATH_COST)
 
 
 '''
@@ -26,6 +27,7 @@ Search the tree for the goal state and return path from initial state to goal st
 def TREE_SEARCH():
     fringe = []
     initial_node = Node(INITIAL_STATE)
+    expanded_nodes = 0
     fringe = INSERT(initial_node, fringe)
     while fringe is not None:
         node = REMOVE_FIRST(fringe)
@@ -34,6 +36,8 @@ def TREE_SEARCH():
         children = EXPAND(node)
         fringe = INSERT_ALL(children, fringe)
         print("fringe: {}".format(fringe))
+        expanded_nodes += 1
+        print("Expanded notes:" + str(expanded_nodes))
 
 
 '''
@@ -47,7 +51,7 @@ def EXPAND(node):
         s = Node(node)  # create node for each in state list
         s.STATE = child[0][0]  # e.g. result = 'F' then 'G' from list ['F', 'G']
         s.HEURISTIC = child[0][1]
-        s.PATH_COST = child[1]
+        s.PATH_COST = node.PATH_COST + child[1] 
         s.PARENT_NODE = node
         s.DEPTH = node.DEPTH + 1
         successors = INSERT(s, successors)
@@ -94,19 +98,17 @@ INITIAL_STATE = 'A'  # STATE are represented with: (("STATE", heuristic), path c
 GOAL_STATES = ['K', 'L']
 
 STATE_SPACE = {
-        "A": [(("B", 5), 1), (("C", 5), 2), (("D", 2), 4)],
-        "B": [(("F", 5), 5), (("E", 4), 1)],
-        "C": [(("E", 4), 1)],
-        "D": [(("H", 1), 1), (("I", 2), 4), (("J", 1), 2)],
-        "F": [(("G", 4), 1)],
-        "E": [(("G", 4), 2), (("H", 1), 3)],
-        "I": [(("L", 0), 3)],
-        "J": [],
-        "G": [(("K", 0), 6)],
-        "H": [(("K",0), 6), (("L",0), 5)]
+        'A': [[('B', 5), 1], [('C', 5), 2], [('D', 2), 4]],
+        'B': [[('F', 5), 5], [('E', 4), 1]],
+        'C': [[('E', 4), 1]],
+        'D': [[('H', 1), 1], [('I', 2), 4], [('J', 1), 2]],
+        'F': [[('G', 4), 1]],
+        'E': [[('G', 4), 2], [('H', 1), 3]],
+        'I': [[('L', 0), 3]],
+        'J': [],
+        'G': [[('K', 0), 6]],
+        'H': [[('K',0), 6], [('L',0), 5]]
         }
-
-
 
 '''
 Run tree search and display the nodes in the path to goal node
