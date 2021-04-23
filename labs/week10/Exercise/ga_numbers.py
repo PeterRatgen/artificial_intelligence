@@ -1,7 +1,7 @@
 import random
 
 
-p_mutation = 0.2
+p_mutation = 0.3
 num_of_generations = 30
 
 
@@ -14,7 +14,9 @@ def genetic_algorithm(population, fitness_fn, minimal_fitness):
 
         for i in range(len(population)):
             mother, father = random_selection(population, fitness_fn)
+            print("mother " + str(mother) + " father: " + str(father))
             child = reproduce(mother, father)
+            print("child " + str(child))
 
             if random.uniform(0, 1) < p_mutation:
                 child = mutate(child)
@@ -48,7 +50,23 @@ def reproduce(mother, father):
     Return the child individual
     '''
 
-    #return child
+    mother = list(mother)
+    father = list(father)
+
+    child = []
+
+    if random.random() < 0.9:
+        crossover = random.randrange(0, len(mother))
+        for i in range(len(mother)):
+            if i < crossover:
+                child.append(mother[i])
+            else:
+                child.append(father[i])
+    else:
+        child = mother
+
+
+    return tuple(child)
 
 
 def mutate(individual):
@@ -57,7 +75,16 @@ def mutate(individual):
     Return the mutated individual
     '''
 
-    #return mutation
+    mutation = list(individual)
+
+    for i in range(len(mutation)):
+      if (random.random() < 0.05):
+        if (mutation[i] == 0):
+          mutation[i] = 1
+        elif (mutation[i] == 1):
+          mutation[i] = 0
+
+    return tuple(mutation)
 
 
 def random_selection(population, fitness_fn):
@@ -79,22 +106,20 @@ def random_selection(population, fitness_fn):
     for chromosome in ordered_population:
         fitness_list.append(fitness_fn(chromosome))
 
-    total_score = sum(fitness_list) 
+    total_score = sum(fitness_list)
 
     selected  = []
 
     for i in range(2):
-        R = random.randrange(total_score * 100) / 100
+        r = random.randrange(total_score * 100) / 100
         score_counter = 0
-        for item in total_score:
-            score_counter += item
-            if (score_counter >= score_counter):
-                selected.append(item)
+        for i in range(len(fitness_list)):
+            score_counter += fitness_list[i]
+            if score_counter >= r:
+                selected.append(ordered_population[i])
                 break
 
-    print(selected)
-    
-    return set(selected)
+    return selected[0], selected[1]
 
 
 def fitness_function(individual):
@@ -102,6 +127,8 @@ def fitness_function(individual):
     Computes the decimal value of the individual
     Return the fitness level of the individual
     '''
+
+    individual = list(individual)
 
     fitness = 0.0
 
@@ -143,9 +170,9 @@ def main():
     #initial_population = get_initial_population(3, 4)
 
     fittest = genetic_algorithm(initial_population, fitness_function, minimal_fitness)
-    print('Fittest Individual: ' + str(fittest))
+    print('Fittest Individual: ' + str(fittest) + " with fitness " + str(fitness_function(fittest)))
 
 
 if __name__ == '__main__':
     pass
-    #main()
+    main()
