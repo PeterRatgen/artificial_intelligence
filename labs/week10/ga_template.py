@@ -74,24 +74,45 @@ def random_selection(population, fitness_fn):
     # list.
     ordered_population = list(population)
 
+    fitness_list = []
 
-    #return selected
+    for chromosome in ordered_population:
+        fitness_list.append(fitness_fn(chromosome))
+
+    total_score = sum(fitness_list) 
+
+    selected  = []
+
+    for i in range(2):
+        R = random.randrange(total_score * 100) / 100
+        score_counter = 0
+        for item in total_score:
+            score_counter += item
+            if (score_counter >= score_counter):
+                selected.append(item)
+                break
+
+    print(selected)
+    
+    return set(selected)
 
 
 def fitness_function(individual):
     '''
     Computes the decimal value of the individual
     Return the fitness level of the individual
-
-    Explanation:
-    enumerate(list) returns a list of pairs (position, element):
-
-    enumerate((4, 6, 2, 8)) -> [(0, 4), (1, 6), (2, 2), (3, 8)]
-
-    enumerate(reversed((1, 1, 0))) -> [(0, 0), (1, 1), (2, 1)]
     '''
 
-    #return fitness
+    fitness = 0.0
+
+    if individual[0] == 1:
+        fitness += 0.5
+    if individual[1] == 1:
+        fitness += 0.25
+    if individual[2] == 1:
+        fitness += 0.25
+
+    return fitness
 
 
 def get_fittest_individual(iterable, func):

@@ -987,6 +987,48 @@ An example of roulette selection is seen here:
   \caption{The roulette selection}
 \end{figure}
 
+A way of combine the two parents, when we have picked them is
+\emph{recombination}.
+
+\begin{definition}
+  \textbf{Recombination} is when we with some high probability $0.8$ to $0.95$
+  choose to replace the rest of the digits, with the content from the other. 
+\end{definition}
+
+\begin{definition}
+  The \textbf{crossover point} is the random single point from the strings are
+  swapped.
+\end{definition}
+
+We now also introduce mutations. Mutations occurs for each digit with some small
+probability between $0.1$ and $0.001$.
+
+\subsubsection{The algorithm}%
+\label{ssub:the_algorithm}
+
+\begin{lstlisting}[inputencoding=utf8/latin1, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+Generate a population of random chromosomes
+while(solution is not good enough)
+  calculate the fitness for each chromosome
+  for each chromosome
+    use the roulette selection to select pairs
+    generate offspring of this with crossover and mutation
+  new population as been produced
+\end{lstlisting}
+
+
+\subsubsection{Paramenters of a GA}%
+\label{ssub:paramenters_of_a_ga}
+
+We of course need to set the population size (the number of chromosomes) the
+mutation rate $m$ and the crossover rate $c$.
+These values have been tuned based on the results. There exists no good general
+theory to deduce good values.
+These best solution is the fittest of the population solutions.
+
+
+
+
 \newpage
 \section{Week 11 - Adversarial Search}%
 \label{sub:_adversarial_search}
