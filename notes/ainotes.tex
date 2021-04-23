@@ -833,10 +833,10 @@ will be at most $\alpha$.
 
 \newpage
 \section{Week 10 - Local Search}
-We can formulate problems in terms of optimization. We do not care about the
-path to a solution. We have an objective function that us about the quailt of a
-possible solution, and we want to find a good solution by minimizing or
-maximizing the value of the function.
+We can formulate problems in terms of optimization. This is that we do not have
+a start state, and we do not care about the path to a solution. We have an
+objective function that us about the quality of a possible solution, and we want
+to find a good solution by minimizing or maximizing the value of the function.
 
 There is three approaches to local search.
 
@@ -849,11 +849,30 @@ circle our function is $$f(n) = -(\text{number of tiles out of place})$$.
 We want to find the best solution, the one closest to what we think we want.
 
 In each iteration we probe, for which move increases our evaluation function.
-It can get stuck in a local optimum.
+
+The psudeocode the algorithm is:
+
+\begin{lstlisting}[inputencoding=utf8/latin1, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+current = starting state
+loop:
+  next = highest value successor of current
+  if (value(next) < value(current))
+    return current
+  else 
+    current = next
+\end{lstlisting}
+
+Because it just probes for best solutions in the visible space, it can get stuck
+in local optima.
+
+An idea for escaping local optima is to iteratively do hill-climbing, each time
+we initialize with a random condition. If subsequent searches improve, then a
+stored state is replaced.
 
 \subsection{Simulated annealing search}
-The hill-climbing will be never go down the hill of global and local maxima. 
-The idea is to escape local maxiam by allowing some "bad" moved but gradually
+
+The hill climbing will be never go down the hill of global and local maxima. 
+The idea is to escape local maxima by allowing some "bad" moved but gradually
 decrease the frequency of these bad moves.
 \begin{itemize}
   \item Probability of takeing downhill move decreases with number of
@@ -862,7 +881,111 @@ decrease the frequency of these bad moves.
 \end{itemize}
 Inspired by annealing process, as part of the tempering of glass, metal.
 
+The pseudocode for the simulated annealing search:
 
+\begin{lstlisting}[inputencoding=utf8/latin1, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+current = starting state 
+for i = 1 to infinity
+  next = random successor of current 
+  let delta = value(next) - value(current)
+  if (delta > 0)
+    current = next
+  else 
+    current = next (with probability exp(delta/T(i)))
+\end{lstlisting}
+
+$T$ is gradually decrease to $0$ over some time $t$. We always accept an
+improvement (delta greater than 0), but if not we accept with a probability of
+$< 1$. We are more likely to pick bad moves early than later.
+
+If the "temperature" $T$ decreases slowly enough, then the simulated annealing
+search will find a global optimum with a probability approaching one. This is
+not practical, the more bad choices we need, the longer the search takes (we
+make fewer good choices in a row).
+
+A better more modern technique is Markov Chain Monte Carlo algorithm for
+expolring complicated state spaces.
+
+\subsection{Genetic Algorithms}%
+\label{sub:genetic_algorithms}
+
+Each living cell contains \textbf{chromosomes}, which are strings of DNA. These
+chromosomes contain \textbf{genes}, which are sections of each strand of DNA.
+The genes determine traits of the organism. A \textbf{genotype} is a collection
+of genes. A collection of traits is called a \textbf{phenotype}. Reproduction
+involdes \textbf{recombination} of genes from parents, and then
+\textbf{mutations} (errors) occurs when these genes are copied. \textbf{Fitness}
+of an organism is how much it can reproduce before it dies.
+We evolve based on "survival of the fittest".\cite[p.  21]{presentation:local_search_algorithms}
+
+A bad idea is to generate random solution and to check if they are correct.
+
+We can take this idea and use it to implement a genetic algorithm (GA).
+
+\begin{lstlisting}[inputencoding=utf8/latin1, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+Generate a set of random solutions
+while(solution is not good enough)
+  test each solution in the set (rank them)
+  prune the bad solution from the set
+  duplicate the good solutions
+    make small changes to these
+\end{lstlisting}
+
+\subsubsection{Encoding a solution}%
+\label{ssub:encoding_a_solution}
+
+We need to encode a solution, such that we can make random changes to these.
+This is sometimes done as bitstrings (eg. 101011). Where each bit represents
+some aspect of the problem. An important point is that we need to be able to
+probe each string and get a score it.
+
+\subsubsection{Digging for oil}%
+\label{ssub:digging_for_oil}
+
+Along a 1 km stretch of road, we want to choose where to drill for oil.
+The search space (or state space) is the set of all possible solutions, in this
+case we have a space of \texttt{[0..1000]}. We encode the search space in
+bitstring of length 10. We then for each generated string check the fitness
+function, as seen on \cite[p. 31]{presentation:local_search_algorithms}.
+
+\subsubsection{Search Space}%
+\label{ssub:search_space}
+
+How the space is formed defines the nature of the Genetic Algorithm's
+performance. As an example a completely random space is bad for a GA, we there
+is no pattern to it and if we have a lot of local maxima, the algorithm can get
+stuck in these.
+
+\subsubsection{Reproduction in a GA}%
+\label{ssub:reproduction_in_a_ga}
+
+We look at duplicating the good solutions (ranked according to the fitness
+function), and making changes to these. Relying on random mutation is not
+necessarily a good idea. Therefore we introduce crossover in reproduction to get
+better results.
+
+The idea is: take two high scoring strings and with some probability (the
+crossover rate) combine them into two new bitstrings. Each of these offspring
+can also be changed randomly (remember mutations).
+
+In selecting the parents of the bitstrings, we want to pick some of the best
+strings. One approach is the "Roulette Wheel" approach.
+\begin{itemize}
+  \item We start by adding the fitness of the chromosomes.
+  \item Then we generate a random number $R$ in this range.
+  \item Then the first chromosome in the population that is $\geq R$, is picked.
+\end{itemize}
+
+An example of roulette selection is seen here:
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[page=41,
+  width=0.8\textwidth]{../presentations/w10_lec05_local_search_sanja_2021.pdf}
+  \label{fig:roulette_wheel}
+  \caption{The roulette selection}
+\end{figure}
 
 \newpage
 \section{Week 11 - Adversarial Search}%
