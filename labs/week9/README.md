@@ -64,3 +64,16 @@ State: D - Depth: 1 - Heuristic: 2 - Path cost 4
 State: A - Depth: 0 - Heuristic: 0 - Path cost 0
 ```
 
+# A* on the Vacuum Cleaner
+
+The solution path of the A*:
+
+```
+Expanded notes:3
+Solution path:
+State: D - Depth: 0 - Heuristic: 0 - Path cost 3
+State: C - Depth: 0 - Heuristic: 1 - Path cost 2
+State: B - Depth: 0 - Heuristic: 2 - Path cost 1
+State: A - Depth: 0 - Heuristic: 3 - Path cost 0
+```
+
