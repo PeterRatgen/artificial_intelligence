@@ -55,15 +55,12 @@ def reproduce(mother, father):
 
     child = []
 
-    if random.random() < 0.9:
-        crossover = random.randrange(0, len(mother))
-        for i in range(len(mother)):
-            if i < crossover:
-                child.append(mother[i])
-            else:
-                child.append(father[i])
-    else:
-        child = mother
+    crossover = random.randrange(0, len(mother))
+    for i in range(len(mother)):
+        if i < crossover:
+            child.append(mother[i])
+        else:
+            child.append(father[i])
 
 
     return tuple(child)
@@ -77,15 +74,14 @@ def mutate(individual):
 
     mutation = list(individual)
 
-    for i in range(len(mutation)):
-      if (random.random() < 0.05):
-        if (mutation[i] == 0):
-          mutation[i] = 1
-        elif (mutation[i] == 1):
-          mutation[i] = 0
+    i = random.randrange(len(mutation))
+
+    if (mutation[i] == 0):
+      mutation[i] = 1
+    elif (mutation[i] == 1):
+      mutation[i] = 0
 
     return tuple(mutation)
-
 
 def random_selection(population, fitness_fn):
     """
@@ -111,7 +107,7 @@ def random_selection(population, fitness_fn):
     selected  = []
 
     for i in range(2):
-        r = random.randrange(total_score * 100) / 100
+        r = random.randrange(total_score)
         score_counter = 0
         for i in range(len(fitness_list)):
             score_counter += fitness_list[i]
@@ -133,11 +129,11 @@ def fitness_function(individual):
     fitness = 0.0
 
     if individual[0] == 1:
-        fitness += 0.5
+        fitness += 4
     if individual[1] == 1:
-        fitness += 0.25
+        fitness += 2
     if individual[2] == 1:
-        fitness += 0.25
+        fitness += 2
 
     return fitness
 

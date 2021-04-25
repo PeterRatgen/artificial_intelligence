@@ -39,6 +39,7 @@ def fitness_fn_positive(state):
     '''
     Compute the number of non-conflicting pairs.
     '''
+    state = state[0]
 
     def conflicted(state, row, col):
         for c in range(col):
