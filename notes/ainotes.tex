@@ -1030,6 +1030,7 @@ These best solution is the fittest of the population solutions.
 
 
 \newpage
+
 \section{Week 11 - Adversarial Search}%
 \label{sub:_adversarial_search}
 
@@ -1055,7 +1056,107 @@ action whose outcomes are defined by precise rules.
 
 This is opposition to physical games which has complex descriptions, and the
 rules can be quite ambiguous. Games are interesting because they are hard
-problems to solve.
+problems to solve. The branching factor of chess is about $35$. Each player
+makes about $50$ moves. The search tree is therefore $35^{100}$. There is about
+$10^{40}$ total distinct nodes in the search tree.  Games are also interesting
+because some instate a time limit, such we cannot search for the optimal
+solution in infinity. We therefore need to make \emph{some} solution, when we
+cannot calculate the optimal solution. 
+
+\begin{definition}
+  \textbf{Pruning} allows us to ignore parts of the search tree, that have no
+  impact on the final choice of the algorithm. Thus reducing complexity.
+\end{definition}
+
+\subsection{A small game}%
+\label{sub:a_small_game}
+
+We can look at two players \textsc{min} and \textsc{max}. These players each
+take turns. We can formulate a search problem with the following contents, where
+$s$ is the state of the game:
+
+\begin{itemize}
+  \item $S_0$: The initial state of the game 
+  \item $\textsc{Player}(s)$: Which player has the ability to move in the game.
+  \item $\textsc{Actions}(s)$: Return the set of legal moves in the current
+    state of the game.
+  \item $\textsc{Result}(s,a)$: The transition model, which defines the result
+    of a move $a$.
+  \item $\textsc{Terminal-Test}(s)$: A terminal test, which is true if the game
+    has ended. States where the game has ended is called terminal states.
+  \item $\textsc{Utility}(s,p)$: A utility function defines the numeric value
+   for a game that ends in terminal state $s$ for player $p$.
+\end{itemize}
+
+In a game $\textsc{Actions}(s)$ and $\textsc{Result}(s,a)$ forms the game tree.
+Each leaf node of the tree has a utility score, as computed by the utility
+function \textsc{Utility}.
+
+
+\subsection{Decisions in games}%
+\label{sub:decisions_in_games}
+
+Since we have a game, with an opponent (in our case \textsc{Min}), we cannot
+simply search our way to the result, we are influenced by the actions of our
+opponent. Therefore \textsc{Max} must have a contingent strategy.
+
+\begin{definition}
+  A \textbf{contingent strategy} is a strategy which is contingent on the moves
+  of an opponent.
+\end{definition}
+
+We look at a game tree.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[page=9,
+  width=0.8\textwidth]{../presentations/w11_lec06_adversarial_search_sanja_2021.pdf}
+  \label{fig:simple_game}
+  \caption{An abstract two player game \cite[p.
+  9]{presentation:games_and_adversarial_search}}
+\end{figure}
+
+Here we see that \textsc{Max} has the possible moves of $a_1, a_2, a_3$. If
+\textsc{Max} chooses $a_1$, then \textsc{Min} has the choices of $a_{11},
+a_{12}, a_{13}$. We get the optimality of each node with the
+\textsc{Minimax}$(n)$ function. \textsc{Max} wants to move to the state with the
+highest value (maximizing the chance of winning). \textsc{Min} wants to minimize
+the value of the \textsc{Minimax}$(s)$ function. The logic for the
+\textsc{Minimax} goes:
+
+\begin{lstlisting}[inputencoding=utf8/latin1, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+Minimax(state) =
+  if (Terminal-Test)
+    Utility(state)
+  if(Player(s) = MAX) {
+    max{Minimax(successors(state))}
+  }
+  if(Player(s) = MIN {
+    min{Minimax(successors(state))}
+  }
+\end{lstlisting}
+
+The \textsc{Minimax} strategy is optimal against an optimal opponent. 
+
+\paragraph{Coin game}%
+\label{par:coin_game}
+
+We have a stack of $N$ coins, each player takes 1, 2 or 3 coins from the stack,
+the one who takes the last coin loses. The game is defined:
+
+\begin{itemize}
+  \item Initial state: The number of coins in the stack.
+  \item Operators:
+    \begin{enumerate}
+      \item Remove one coin 
+      \item Remove two coins 
+      \item Remove three coins
+    \end{enumerate}
+  \item Terminal test: There are no coins left on the stack
+  \item Utility function: F(S)
+    \subitem F(S) = 1 if MAX wins, 0 if MIN wins
+\end{itemize}
+
 
 
 \newpage
