@@ -1157,6 +1157,20 @@ the one who takes the last coin loses. The game is defined:
     \subitem F(S) = 1 if MAX wins, 0 if MIN wins
 \end{itemize}
 
+\subsection{Alpha-Beta Pruning}%
+\label{sub:alpha_beta_pruning}
+
+The idea is to improve the performance of the minimax algorithm through
+alpha-beta pruning. A quote is: \textit{"If you have an idea that is surely bad,
+don't take the time to see how truly awful it is"}.
+
+Through Alpha-Beta pruning we avoid processing the subtrees that will have no
+effect on the result. We keep two parameters: $\alpha$, which is the best value
+for \textsc{Max} seen so far, and $\beta$, which is the best value for
+\textsc{Min}. $\alpha$ is used in \textsc{Min} nodes, and is assigned in
+\textsc{Max} nodes. $\beta$ is used in \textsc{Max} nodes, and is assigned in
+\textsc{Min} nodes.
+
 
 
 \newpage
