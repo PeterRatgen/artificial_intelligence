@@ -28,7 +28,19 @@ def is_terminal(state):
     :param state: State of the checkerboard. Ex: [0; 1; 2; 3; X; 5; 6; 7; 8]
     :return:
     """
-    pass
+    winning_states = [[0,1,2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5 , 8], [0, 4, 8], [2, 4, 6]]
+
+    
+    for placement in winning_states:
+        if placement[0] == placement[1] and placement[1] == placement[2]:
+            return True
+
+    signs = ["X", "O"]
+    for i in state:
+        if i not in state:
+            return False
+    return True
+
 
 
 def utility_of(state):
@@ -37,7 +49,19 @@ def utility_of(state):
     :param state: State of the checkerboard. Ex: [0; 1; 2; 3; X; 5; 6; 7; 8]
     :return:
     """
-    pass
+
+    winning_states = [[0,1,2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5 , 8], [0, 4, 8], [2, 4, 6]]
+
+
+    for placement in winning_states:
+        if placement[0] == placement[1] and placement[1] == placement[2]:
+            if placement[0] == "X":
+                return 1
+            if placement[0] == "Y":
+                return 0
+
+    return 0
+
 
 
 def successors_of(state):
@@ -46,7 +70,16 @@ def successors_of(state):
     :param state: State of the checkerboard. Ex: [0; 1; 2; 3; X; 5; 6; 7; 8]
     :return:
     """
-    pass
+    
+    state_list = []
+    signs = ["X", "O"]
+    counter = 0
+    for i in state:
+        if i not in signs:
+            state_list.append(counter, )
+        counter += 1
+
+    return state_list
 
 
 def display(state):
