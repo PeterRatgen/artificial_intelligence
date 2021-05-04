@@ -53,14 +53,15 @@ def utility_of(state):
 
     winning_states = [[0, 1, 2],[3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5 , 8], [0, 4, 8], [2, 4, 6]]
 
-
+    signs = ["X", "O"]
     for placement in winning_states:
-        if placement[0] == placement[1] and placement[1] == placement[2]:
-            if placement[0] == "X":
+        if state[placement[0]] not in signs:
+            continue
+        if state[placement[0]] == state[placement[1]] and state[placement[1]] == state[placement[2]]:
+            if state[placement[0]] == "X":
                 return 1
-            if placement[0] == "Y":
-                return 0
-
+            if state[placement[0]] == "O":
+                return -1
     return 0
 
 
@@ -105,4 +106,5 @@ def argmax(iterable, func):
 
 
 if __name__ == '__main__':
-    main()
+    #print(utility_of(["O", 1, "X", 3, "X", "X", 6, 7, "X"]))
+    #main()
