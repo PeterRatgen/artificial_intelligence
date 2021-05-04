@@ -1171,9 +1171,37 @@ for \textsc{Max} seen so far, and $\beta$, which is the best value for
 \textsc{Max} nodes. $\beta$ is used in \textsc{Max} nodes, and is assigned in
 \textsc{Min} nodes.
 
+\begin{lstlisting}[inputencoding=utf8/latin1, basicstyle=\footnotesize, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+traverse the tree in a depth-first order
+At MAX node n, alpha(n) = max value found  (alpha start at -inf)
+At MIN node n, beta(n) = min value found so far (beta value starts at inf)
+\end{lstlisting}
 
+\emph{Beta cutoff}: stop searching below \textsc{Max} node $N$, if
+\textsc{alpha($N$)} $>=$ \textsc{beta($i$)} for a \textsc{Min} node ancestor $i$ of $N$.
+
+\emph{Alpha cutoff}: stop searching below \textsc{Min} node $N$ if
+\textsc{beta($N$)} $<=$ \textsc{alpha($i$)} for a MAX node ancestor $i$ of $N$
+
+It is possible to compute the exact minimax decision without expanding every
+node in the game tree.
+
+So looking at the example in the presentation. We are looking at the tree from
+the MAX position. We look in a depth of 2, we want to find the best way to go.
+So in the first sub tree we traverse the whole thing, and find that 3 is the
+lowest value. So we want to look in the other subtrees to find if there exists a
+higher value than 3. 
+
+In subtree 2, we find a 2. Therefore there is no better way in this subtree, as
+we want to find something higher or equal to 3. The rest is pruned.
+
+In subtree 3, we first find a 14, we continue, finding 5, however in the last
+leaf node, we find a 2.
+
+We thus want to pick the first subtree as this is worst for our opponent.
 
 \newpage
+
 \section{Week 12 - Constraint Satisfaction Problems}%
 \label{sec:23_march_constraint_satisfaction_problems}
 
