@@ -71,12 +71,26 @@ def successors_of(state):
     """
     state_list = []
     counter = 0
+
+    x_count = 0
+    y_count = 0
+
+    for i in range(len(state)):
+        if state[i] == "X":
+            x_count += 1
+        if state[i] == "O":
+            y_count += 1
     
     for i in range(len(state)):
         if state[i] not in signs:
             new_state = state[:]
-            new_state[i] = "X"
+            if x_count != y_count:
+                new_state[i] = "O"
+            else:
+                new_state[i] = "X"
             state_list.append((i, new_state))
+    print("state " + str(state))
+    print("children " + str(state_list))
     return state_list
 
 
