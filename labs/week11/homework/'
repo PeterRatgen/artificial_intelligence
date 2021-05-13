@@ -7,16 +7,16 @@ def minmax_decision(state):
         if is_terminal(state):
             return utility_of(state)
         v = -infinity
-        for s in successors_of(state):
+        for (a, s) in successors_of(state):
             v = max(v, min_value(s))
-        print('V: ' + str(v))
+        #print('V: ' + str(v))
         return v
 
     def min_value(state):
         if is_terminal(state):
             return utility_of(state)
         v = infinity
-        for s in successors_of(state):
+        for (a, s) in successors_of(state):
             v = min(v, max_value(s))
         return v
 
@@ -104,9 +104,8 @@ def successors_of(state):
 
 def display(state):
     print("Displaying state:")
-    print(state)
-    #for c in state:
-    #    print(c * "-")
+    for c in state:
+        print(c * "-")
 
 
 def main():
@@ -117,7 +116,7 @@ def main():
         if not is_terminal(board):
             display(board)
             index = int(input('Index to expanded (from 0) '))
-            print("index to asdf: " + str(index))
+            print("index to asdf: " + index)
             board[int(input('Your move? '))] = 'O'
 
     print("Game has ended: " + str(utility_of(board)))
@@ -129,5 +128,4 @@ def argmax(iterable, func):
 
 
 if __name__ == '__main__':
-    print(successors_of([7]))
     main()
