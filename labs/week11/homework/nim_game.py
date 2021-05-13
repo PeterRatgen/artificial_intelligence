@@ -141,7 +141,7 @@ def get_new_stacks(board):
 
 
 def main():
-    board = [7]
+    board = [15]
     while not is_terminal(board):
         if not is_terminal(board):
             display(board)
@@ -149,7 +149,7 @@ def main():
         board = minmax_decision(board)
         board = sorted(board, reverse=True)
 
-    print("Game has ended: " + str(utility_of(board)))
+    print("Game has ended: " + "Computer has won" if utility_of(board) == 1 else "Player has won")
     display(board)
 
 
