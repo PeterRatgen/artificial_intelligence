@@ -141,7 +141,7 @@ def get_new_stacks(board):
 
 
 def main():
-    board = [15]
+    board = [20]
     while not is_terminal(board):
         if not is_terminal(board):
             display(board)

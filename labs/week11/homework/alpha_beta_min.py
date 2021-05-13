@@ -42,16 +42,16 @@ def is_terminal(state):
 
 
 def utility_of(state):
-    if sum(state) % 2 == 1:
-        if len(state) % 2 == 1:
+    if sum(state) % 2 == 0:
+        if len(state) % 2 == 0:
             #length is uneven
             return 1
         else:
             #length is even
-            return 0
+            return -1
     else: 
         if len(state) % 2 == 0:
-            return 0
+            return -1
         else:
             return 1
 
@@ -145,9 +145,9 @@ def main():
     state = [20]
 
     while not is_terminal(state):
-        state = user_select_pile(state)
+        state = computer_select_pile(state)
         if not is_terminal(state):
-            state = computer_select_pile(state)
+            state = user_select_pile(state)
 
     print("    Final state is {}".format(state))
 
