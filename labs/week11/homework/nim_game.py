@@ -21,7 +21,8 @@ def minmax_decision(state):
         return v
 
     infinity = float('inf')
-    action, state = argmax(successors_of(state), lambda a: min_value(a))
+    action = argmax(successors_of(state), lambda a: min_value(a))
+    print("action " + str(action))
     return action
 
 
@@ -57,7 +58,26 @@ def utility_of(state):
         else:
             return 1
 
+def flatten(arr):
+    flat = []
+    for j in arr:
+        if type(j) == list:
+            for k in j:
+                flat.append(k)
+        else:
+            flat.append(j)
+    return flat
 
+def expand(param):
+    return_arr = [] 
+    for i in range(1, param // 2 + 1):
+        add_arr = sorted([param - i, i - 0], reverse=True)
+        if add_arr[0] == add_arr[1]:
+            continue
+        return_arr.append(add_arr) 
+    if len(return_arr) == 0:
+        return_arr = [[]]
+    return return_arr
 
 def successors_of(state):
     """
@@ -65,29 +85,6 @@ def successors_of(state):
     :param state: State of the checkerboard. Ex: [0; 1; 2; 3; X; 5; 6; 7; 8]
     :return:
     """
-
-    def expand(param):
-        return_arr = [] 
-        for i in range(1, param // 2 + 1):
-            add_arr = sorted([param - i, i - 0], reverse=True)
-            if add_arr[0] == add_arr[1]:
-                continue
-            return_arr.append(add_arr) 
-        if len(return_arr) == 0:
-            return_arr = [[]]
-        return return_arr
-
-    def flatten(arr):
-        flat = []
-        for j in arr:
-            if type(j) == list:
-                for k in j:
-                    flat.append(k)
-            else:
-                flat.append(j)
-        return flat
-
-    
     return_state = []
 
     for i in range(len(state)):
@@ -108,17 +105,48 @@ def display(state):
     #for c in state:
     #    print(c * "-")
 
+def get_new_stacks(board):
+    new_board = board[:]
+    index = int(input('Index to expanded (from 0) '))
+    if len(board) <= index:
+        print("Not a valid index, try again")
+        return get_new_stacks(board)
+
+    if len(expand(board[index])[0]) == 0:
+        print("That index cannot be expanded, try again")
+        return get_new_stacks(board)
+
+    possible_stacks = expand(board[index])
+    print("Split " + str(board[index]) + " into two stacks (equal size not allowed)")
+    stack_1 = int(input('Stack 1: '))
+    stack_2 = int(input('Stack 2: '))
+
+    if stack_1 == stack_2:
+        print("Stacks cannot be equal size, try again ")
+        return get_new_stacks(board)
+
+    if stack_1 + stack_2 != board[index]:
+        print("Stacks do not equal " + str(board[index]) + ", try again")
+        return get_new_stacks(board)
+
+    new_stack = sorted([stack_1, stack_2], reverse=True)
+    if new_stack not in possible_stacks:
+        return get_new_stacks(board)
+
+    new_board[index] = new_stack
+    return sorted(flatten(new_board), reverse=True)
+
+
+
 
 def main():
     board = [7]
     while not is_terminal(board):
-        board.append(minmax_decision(board))
-        board.sort()
+        board = minmax_decision(board)
+        board = sorted(board, reverse=True)
         if not is_terminal(board):
             display(board)
-            index = int(input('Index to expanded (from 0) '))
-            print("index to asdf: " + str(index))
-            board[int(input('Your move? '))] = 'O'
+            board = get_new_stacks(board)
 
     print("Game has ended: " + str(utility_of(board)))
     display(board)
