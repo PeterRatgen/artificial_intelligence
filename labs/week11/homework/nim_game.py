@@ -1,6 +1,3 @@
-winning_states = [[0,1,2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5 , 8], [0, 4, 8], [2, 4, 6]]
-signs = ["X", "O"]
-
 def minmax_decision(state):
 
     def max_value(state):
@@ -9,7 +6,7 @@ def minmax_decision(state):
         v = -infinity
         for s in successors_of(state):
             v = max(v, min_value(s))
-        print('V: ' + str(v))
+        #print('V: ' + str(v))
         return v
 
     def min_value(state):
@@ -33,7 +30,7 @@ def is_terminal(state):
     :return:
     """
     finishing = [1, 2]
-    print("state " + str(state))
+    #print("state " + str(state))
     for i in state:
         if i not in finishing:
             return False
@@ -46,11 +43,15 @@ def utility_of(state):
     """
     returns +1 if MAX is the winner, returns 0 if MIN is the winner
     """
+    
+    # if the initial state is uneven, then MAX will win only the len of the board is uneven.
 
     if sum(state) % 2 == 1:
         if len(state) % 2 == 1:
+            #length is uneven
             return 1
         else:
+            #length is even
             return 0
     else: 
         if len(state) % 2 == 0:
@@ -142,11 +143,11 @@ def get_new_stacks(board):
 def main():
     board = [7]
     while not is_terminal(board):
-        board = minmax_decision(board)
-        board = sorted(board, reverse=True)
         if not is_terminal(board):
             display(board)
             board = get_new_stacks(board)
+        board = minmax_decision(board)
+        board = sorted(board, reverse=True)
 
     print("Game has ended: " + str(utility_of(board)))
     display(board)
@@ -157,5 +158,5 @@ def argmax(iterable, func):
 
 
 if __name__ == '__main__':
-    print(successors_of([7]))
+    print(utility_of([5, 1, 1]))
     main()
