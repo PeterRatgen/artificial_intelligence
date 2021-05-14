@@ -1205,7 +1205,137 @@ We thus want to pick the first subtree as this is worst for our opponent.
 \section{Week 12 - Constraint Satisfaction Problems}%
 \label{sec:23_march_constraint_satisfaction_problems}
 
+With constraint satisfaction we have a problem with some \emph{variables},
+\emph{a domain} and some \emph{constraints}. An example of constraint
+satisfaction is the $N$-queens problem. Where we have the constraint of we have
+to use $N$-queens, as we have to fit the size of the board. And the obvious
+constraints of that we cannot place others horizontally, vertically and
+diagonally from the placement of the queen.
 
+Constraint satisfaction is a way to propagate constraint imposed by the one
+queen to the others. 
+
+\subsection{Example problems}%
+\label{sub:example}
+
+\paragraph{N-Queens}
+
+A formal definition of $N$-queens:
+
+\begin{itemize}
+  \item Variables
+    \subitem $X_{ij}$ - this is a variable of the board (some placement).
+  \item Domains 
+    \subitem $\{0,1\}$ - either the placement on the board has a queen or not.
+  \item Constraints 
+    \subitem $\sum_{i,j}X_{ij} = N$ - for all $i,j$ there must be exactly $N$
+    queens.
+    \subitem $(X_{ij}, X_{ik}) \in \{(0,0), (0, 1), (1,0)\}$ - two queens cannot
+    be on the same column. This is the case as the $i$s are the same.
+    \subitem $(X_{ij}, X_{kj}) \in \{(0,0), (0, 1), (1,0)\}$ - two queens cannot
+    be on the same row. This is the case the $j$s are the same.
+    \subitem $(X_{ij}, X_{i+k, j + k}) \in \{(0,0), (0, 1), (1,0)\}$ - two
+    cannot be on the same downward diagonal.
+    \subitem $(X_{ij}, X_{i+k, j - k}) \in \{(0,0), (0, 1), (1,0)\}$ - two
+    queens cannot be on the same upward diagonal.
+\end{itemize}
+
+\paragraph{Cryptarithmetic}
+
+\begin{itemize}
+  \item Variables 
+    \subitem T, W, O, F, U, R, $X_1$, $X_2$.
+  \item Domains
+    \subitem $\{0, 1, 2, \dots, 9\}$
+  \item Constraints
+    \subitem $O + O = R + 10 *X_1$
+    \subitem $W+W + X_1 = U + 10 * X_2$
+    \subitem $T + T + X_2 = O + 10 * F$
+    \subitem All the letters has to have different values.
+    \subitem $T \neq 0$, $F \neq 0$
+\end{itemize}
+
+\subsection{Search formulation}%
+\label{sub:search_formulation}
+
+\begin{itemize}
+  \item States: 
+    \subitem Variables and values assigned so far.
+  \item Initial state: 
+    \subitem The empty board.
+  \item Action: 
+    \subitem We choose some unassigned variable and assign it to a value that
+    does not violate any constraints. This should fail if there are no valid
+    assignments.
+  \item Goal tests:
+    \subitem The current assignment is complate and satisfies all constraints.
+\end{itemize}
+
+This is a good naïve approach. Then for $n$ variables the depth of the solution
+is $n$. There are $m$ possible values for any variable, there is thus $n! \cdot
+m^n$ paths in the search tree, this yields an enormous search space.
+
+\paragraph{Backtracking search}%
+\label{par:backtracking_search}
+
+An interesting point is that assignments are commutative. [WA = red then NT =
+green] is the same as [NT = green then WA = red], the order does not matter.  We
+only need to consider assignments to a single variable at each level (i.e., we
+fix the order of assignments) – Then there are only $m^n$ leaves ($n$ – number
+of variables and $m$ is the number of leaves).
+Depth-first search for constraint satisfaction problems with single-variable
+assignment is called backtracking search.
+
+Then the exploration of a node fails then the search backtracks to an unexplored
+state.
+
+We look at the \textsc{CSP-Backtracking} algorithm:
+\begin{lstlisting}[inputencoding=utf8/latin1,basicstyle=\small, keywordstyle=\color{blue}\bfseries, rulecolor=\color{black}]
+CSP-Backtracking(PartialAssignment A)
+  if A is complete then return A
+  
+  X = unassigned variable
+  D = select an ordering for the domain of X
+  
+  for v in D
+    if v is consistet with A then 
+      Add (X=v) to A 
+      result = CSP-Backtracking(A)
+      if result != failure then return result 
+      remove (X=v) from A
+  return failure
+  
+\end{lstlisting}
+
+To backtracking there some relevant questions to ask:
+
+\begin{itemize}
+  \item Which variable should be assigned next? It is not necessarily the best
+    approach to pick the next variable based on the sequence.
+    \subitem We can choose the \emph{most constrained variable}, such the we
+    choose the variable with the fewest legal values. This is called the minimum
+    remaining values heuristic.
+
+    We can also choose the \emph{most constraining variable}, which imposes the
+    most constraints on the remaining varaibles. This is a tie-breaker among
+    most constrained variables, this is seleced among the varaiables with the
+    smallest remaining domains. 
+  \item In what order should its values be tried?
+    \subitem We can choose the least constraining variable. Which is the value
+    the rules out the fewest in the remaining variables.
+  \item Can we detect inevitable failure early? 
+    \subitem Keep track of remaining legal values for unassigned variables. We
+    terminate search when any variable has no legal values.
+\end{itemize}
+
+\paragraph{Constraint propagation}%
+\label{par:constraint_propagation}
+
+Forward checking propagates information form assigned to unassigned variables,
+but does not provide early detection for all failures.
+
+Arc consistency is a good way of keeping track of which values are allowed in
+related nodes.
 
 \newpage
 \section{Week 15 - Probability}%
