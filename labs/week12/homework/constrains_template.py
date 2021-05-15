@@ -58,48 +58,68 @@ class CSP:
         return True
 
 
-def create_australia_csp():
-    wa, q, t, v, sa, nt, nsw = 'WA', 'Q', 'T', 'V', 'SA', 'NT', 'NSW'
-    values = ['Red', 'Green', 'Blue']
-    variables = [wa, q, t, v, sa, nt, nsw]
+def create_south_america():
+    gf, sr, gy, ve, co, ec = 'Guyane (FR)', 'Suriname', 'Guyana', 'Venezuela', 'Colombia', 'Ecuador'
+    pe, cl, bo, br, py = 'Peru', 'Chile', 'Bolivia', 'Brazil', 'Paraguay'
+    ar, uy = 'Argentina', 'Uruguay'
+    values = ['Red', 'Green', 'Blue', 'Yellow']
+    variables = [gf, sr, gy, ve, co, ec, pe, cl, bo , br, py, ar ,uy]
     domains = {
-        wa: values[:],
-        q: values[:],
-        t: values[:],
-        v: values[:],
-        sa: values[:],
-        nt: values[:],
-        nsw: values[:],
+        gf: values[:],
+        sr: values[:],
+        gy: values[:],
+        ve: values[:],
+        co: values[:],
+        ec: values[:],
+        pe: values[:],
+        cl: values[:],
+        bo: values[:],
+        br: values[:],
+        py: values[:],
+        ar: values[:],
+        uy: values[:],
     }
     neighbours = {
-        wa: [sa, nt],
-        q: [sa, nt, nsw],
-        t: [],
-        v: [sa, nsw],
-        sa: [wa, nt, q, nsw, v],
-        nt: [sa, wa, q],
-        nsw: [sa, q, v],
+        gf: [sr, br],
+        sr: [gf, gy, br],
+        gy: [ve, sr, br],
+        ve: [co, gy, br],
+        co: [ec, pe, ve, br],
+        ec: [co, pe],
+        pe: [co, ec, br],
+        cl: [pe, bo, ar],
+        bo: [pe, cl, ar, py],
+        br: [gf, sr, gy, ve, co, pe, bo , py, uy],
+        py: [bo, ar, uy, br],
+        ar: [cl, bo, py, uy],
+        uy: [ar, py, br],
     }
 
     def constraint_function(first_variable, first_value, second_variable, second_value):
         return first_value != second_value
 
     constraints = {
-        wa: constraint_function,
-        q: constraint_function,
-        t: constraint_function,
-        v: constraint_function,
-        sa: constraint_function,
-        nt: constraint_function,
-        nsw: constraint_function,
+        gf: constraint_function,
+        sr: constraint_function,
+        gy: constraint_function,
+        ve: constraint_function,
+        co: constraint_function,
+        ec: constraint_function,
+        pe: constraint_function,
+        cl: constraint_function,
+        bo: constraint_function,
+        br: constraint_function,
+        py: constraint_function,
+        ar: constraint_function,
+        uy: constraint_function,
     }
 
     return CSP(variables, domains, neighbours, constraints)
 
 
 if __name__ == '__main__':
-    australia = create_australia_csp()
-    result = australia.backtracking_search()
+    south_america = create_south_america()
+    result = south_america.backtracking_search()
     for area, color in sorted(result.items()):
         print("{}: {}".format(area, color))
 
