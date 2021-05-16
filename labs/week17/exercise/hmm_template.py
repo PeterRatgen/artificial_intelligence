@@ -61,16 +61,30 @@ def compute_forward(states, observations, transitions, emissions):
     # number of observations - subtract one, because a dummy "None" is added on index 0.
     big_t = len(observations) - 1
 
+
     # final state
     f = big_n + 1
 
     # probability matrix - all values initialized to 5, as 0 has meaning in the matrix
     forward = np.ones((big_n + 2, big_t + 1)) * 5
 
-    '''
-    FINISH FUNCITON
-    '''
-    
+    #print(forward)
+    #print(emissions)
+
+    for state in inclusive_range(1, big_n):
+        forward[state][1] = transitions[0][state] * emissions[state][0]
+   
+    for t in inclusive_range(2, big_t - 1):
+        for s in inclusive_range(1, big_n):
+            summ = 0
+            for s_mark in inclusive_range(1, big_n):
+                summ += forward[s_mark][t-1] * transitions[s_mark][s] * emissions[s][observations[t]]
+            forward[s][t] = summ
+
+    for state in inclusive_range(1, big_n):
+        forward[qf][big_t] += forward[state][big_t] * transitions[state][qf]
+
+    return forward[qf][big_t]
 
 
 def compute_viterbi(states, observations, transitions, emissions):
