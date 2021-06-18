@@ -35,10 +35,7 @@ class Variable(object):
             self.assignments[assignments[i]] = i
 
         # holds the distribution table of this random variable
-        print(probability_table)
         for key, val in probability_table.items():
-            print("key: " + str(key))
-            print("val: " + str(val))
             if len(val) != len(assignments):
                 self = None
                 raise ValueError(
@@ -125,37 +122,24 @@ class Variable(object):
         # COMPLETE THIS FUNCTION
         # Set self.marginal_probabilities
 
-        marginals = []
+        if len(self.parents) == 0:
+            self.marginal_probabilities = self.probability_table[list(self.probability_table.keys())[0]]
+        else:
+            # for each row in probability table
+            for key, v in self.probability_table.items():
+                # marginal probability of parents, assume parents are
+                # independent
+                parents_probability_array = [
+                    parent.get_marginal_probability(k)
+                    for parent, k in zip(self.parents, key)
+                ]
 
-        for assignment in self.get_assignments():
-            total = 0
-            query = []
-            par_assign = []
-            for parent in self.parents:
-                par_assign.append([i for i in parent.get_assignments()])
+                parents_probability = multiply_vector_elements(parents_probability_array)
 
-            if len(par_assign) == 0:
-                self.marginal_probabilities = [self.probability_table[()][0],self.probability_table[()][1]]
-                self.ready = True
-                return
-            elif len(par_assign) < 2:
-                for i in par_assign[0]:
-                    query.append((i,))
-            else: 
-                len_assign = len(par_assign[0])
-                for x in range(len_assign):
-                    for y in range(len_assign):
-                        query.append((par_assign[0][x], par_assign[1][y]))
-            for i in query:
-                total += self.get_probability(assignment, i)    
-            marginals.append(total)
-
-        s = sum(marginals)
-        if s != 0:
-            for i in range(len(marginals)):
-                marginals[i] = marginals[i]/s 
-
-        self.marginal_probabilities = marginals
+                self.marginal_probabilities = [
+                    self.marginal_probabilities[j] + v[j]*parents_probability
+                    for j in range(len(self.assignments))
+                ]
 
         # set this Node`s state to ready
         self.ready = True
@@ -244,27 +228,13 @@ class BayesianNetwork(object):
     # values is dictionary
     def get_joint_probability(self, values):
         """ return the joint probability of the Nodes """
-        # COMPLETE THIS FUNCTION
          
-        print(values)
-        sum_of_nodes = 1
-        for i in values.keys():
-            values_copy = values.copy()
-            parent_names = []
-            for j in self.varsMap[i].parents:
-                parent_names.append(j.name)
-            
-            for val in values.keys():
-                if val not in parent_names:
-                    values_copy.pop(val)
-
-            value = {i: values[i]}
-
-            prob = self.get_conditional_probability(value, values_copy)
-            sum_of_nodes *= prob
-
-        return sum_of_nodes
-
+        joint = 1
+        for var in reversed(self.variables):
+            var_value = values[var.name]
+            parents_values = self.sub_vals(var, values)
+            joint = joint * var.get_probability(var_value, parents_values)
+        return joint
 
         # Return join probability
 
@@ -391,37 +361,36 @@ def print_marginal_probabilities(network):
 
 def sprinkler():
     # the values kept as dictionary
-    t1 = {(): (0.7, 0.3)}
-    t2 = {(): (0.7, 0.3)}
-    t3 = {(): (0.8, 0.2)}
-    t4 = {(): (0.1, 0.7)}
-    t5 = {
-        ('true', 'true'): (0.05),
+    dt = {(): (0.3, 0.7)}
+    em = {(): (0.7, 0.3)}
+    ftl = {(): (0.8, 0.2)}
+    v = {('false',): (0.1), ('true',): (0.7)}
+    sms = {
+        ('false', 'false'): (0.7),
         ('true', 'false'): (0.6),
         ('false', 'true'): (0.3),
-        ('false', 'false'): (0.7)
+        ('true', 'true'): (0.05)
     }
-    t6 = { 
-        ('true', 'true', 'true') : (0.9),
-        ('true', 'true', 'false') : (0.8),
-        ('true', 'false', 'true') : (0.3),
-        ('true', 'false', 'false') : (0.2),
-        ('false', 'true', 'true') : (0.6),
-        ('false', 'true', 'false') : (0.5),
-        ('false', 'false', 'true') : (0.1),
-        ('false', 'false', 'false') : (0.01)
+    hc = {
+            ('true', 'true', 'true'): (0.9),
+            ('true', 'true', 'false'): (0.8),
+            ('true', 'false', 'true'): (0.3),
+            ('true', 'false', 'false'): (0.2),
+            ('false', 'true', 'true'): (0.6),
+            ('false', 'true', 'false'): (0.5),
+            ('false', 'false', 'true'): (0.1),
+            ('false', 'false', 'false'): (0.01),
     }
 
     # creation of Nodes objects
+    damaged_tire  = Variable('Damaged Tire', ('false', 'true'), dt)
+    el_mal  = Variable('Electronics Malfunctioning', ('false', 'true'), em)
+    fuel_tank  = Variable('Fuel Tank Leaking', ('false', 'true'), ftl)
+    virations = Variable('Vibrations', ('true',), v, [damaged_tire])
+    slow_max = Variable('Slow Max Speed', ('true',), sms, [damaged_tire, el_mal])
+    high_compo = Variable('High Consumption', ('true',), hc, [damaged_tire, fuel_tank, el_mal])
 
-    dt = Variable('Damaged Tire', ('false', 'true'), t1)
-    em = Variable('Electronics Malfunctioning', ('false', 'true'), t2)
-    ftl = Variable('Fuel Tank Leaking', ('false', 'true'), t3)
-    v = Variable('Vibrations', ('false', 'true'), t4, [dt])
-    sms = Variable('Slow Max Speed', ('false', 'true'), t5, [dt, em])
-    hc = Variable('High Consumtion', ('false', 'true'), t6, [dt, ftl, em])
-
-    variables = [dt, em, ftl, v, sms, hc]
+    variables = [damaged_tire, el_mal, fuel_tank, virations, slow_max, high_compo]
 
     # creation of Network
     network = BayesianNetwork()
@@ -433,15 +402,15 @@ def sprinkler():
     print_marginal_probabilities(network)
 
     print('')
+    conditionals_vars = {'Fuel Tank Leaking': 'true'}
+    conditionals_evidents = {'High Consumption': 'true'}
 
-    joint_values = {
-        v.name: 'true',
-        sms.name: 'true',
-        hc.name : 'false',
-    }
-    print_joint_probability(network, joint_values)
+    print_conditional_probability(network, conditionals_vars, conditionals_evidents)
 
     print('')
+
+    sample = create_random_sample(network)
+    print_joint_probability(network, sample)
 
 
 sprinkler()

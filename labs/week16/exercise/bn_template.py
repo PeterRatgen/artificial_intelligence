@@ -122,37 +122,24 @@ class Variable(object):
         # COMPLETE THIS FUNCTION
         # Set self.marginal_probabilities
 
-        marginals = []
+        if len(self.parents) == 0:
+            self.marginal_probabilities = self.probability_table[list(self.probability_table.keys())[0]]
+        else:
+            # for each row in probability table
+            for key, v in self.probability_table.items():
+                # marginal probability of parents, assume parents are
+                # independent
+                parents_probability_array = [
+                    parent.get_marginal_probability(k)
+                    for parent, k in zip(self.parents, key)
+                ]
 
-        for assignment in self.get_assignments():
-            total = 0
-            query = []
-            par_assign = []
-            for parent in self.parents:
-                par_assign.append([i for i in parent.get_assignments()])
+                parents_probability = multiply_vector_elements(parents_probability_array)
 
-            if len(par_assign) == 0:
-                self.marginal_probabilities = [self.probability_table[()][0],self.probability_table[()][1]]
-                self.ready = True
-                return
-            elif len(par_assign) < 2:
-                for i in par_assign[0]:
-                    query.append((i,))
-            else: 
-                len_assign = len(par_assign[0])
-                for x in range(len_assign):
-                    for y in range(len_assign):
-                        query.append((par_assign[0][x], par_assign[1][y]))
-            for i in query:
-                total += self.get_probability(assignment, i)    
-            marginals.append(total)
-
-        s = sum(marginals)
-        if s != 0:
-            for i in range(len(marginals)):
-                marginals[i] = marginals[i]/s 
-
-        self.marginal_probabilities = marginals
+                self.marginal_probabilities = [
+                    self.marginal_probabilities[j] + v[j]*parents_probability
+                    for j in range(len(self.assignments))
+                ]
 
         # set this Node`s state to ready
         self.ready = True
@@ -241,27 +228,13 @@ class BayesianNetwork(object):
     # values is dictionary
     def get_joint_probability(self, values):
         """ return the joint probability of the Nodes """
-        # COMPLETE THIS FUNCTION
          
-        print(values)
-        sum_of_nodes = 1
-        for i in values.keys():
-            values_copy = values.copy()
-            parent_names = []
-            for j in self.varsMap[i].parents:
-                parent_names.append(j.name)
-            
-            for val in values.keys():
-                if val not in parent_names:
-                    values_copy.pop(val)
-
-            value = {i: values[i]}
-
-            prob = self.get_conditional_probability(value, values_copy)
-            sum_of_nodes *= prob
-
-        return sum_of_nodes
-
+        joint = 1
+        for var in reversed(self.variables):
+            var_value = values[var.name]
+            parents_values = self.sub_vals(var, values)
+            joint = joint * var.get_probability(var_value, parents_values)
+        return joint
 
         # Return join probability
 
