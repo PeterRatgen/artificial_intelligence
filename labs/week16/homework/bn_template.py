@@ -361,25 +361,25 @@ def print_marginal_probabilities(network):
 
 def sprinkler():
     # the values kept as dictionary
-    dt = {(): (0.3, 0.7)}
+    dt = {(): (0.7, 0.3)}
     em = {(): (0.7, 0.3)}
     ftl = {(): (0.8, 0.2)}
-    v = {('false',): (0.1), ('true',): (0.7)}
+    v = {('false',): (0.1,), ('true',): (0.7,)}
     sms = {
-        ('false', 'false'): (0.7),
-        ('true', 'false'): (0.6),
-        ('false', 'true'): (0.3),
-        ('true', 'true'): (0.05)
+        ('true', 'true'): (0.05,),
+        ('true', 'false'): (0.6,),
+        ('false', 'true'): (0.3,),
+        ('false', 'false'): (0.7,),
     }
     hc = {
-            ('true', 'true', 'true'): (0.9),
-            ('true', 'true', 'false'): (0.8),
-            ('true', 'false', 'true'): (0.3),
-            ('true', 'false', 'false'): (0.2),
-            ('false', 'true', 'true'): (0.6),
-            ('false', 'true', 'false'): (0.5),
-            ('false', 'false', 'true'): (0.1),
-            ('false', 'false', 'false'): (0.01),
+            ('true', 'true', 'true'): (0.9,),
+            ('true', 'true', 'false'): (0.8,),
+            ('true', 'false', 'true'): (0.3,),
+            ('true', 'false', 'false'): (0.2,),
+            ('false', 'true', 'true'): (0.6,),
+            ('false', 'true', 'false'): (0.5,),
+            ('false', 'false', 'true'): (0.1,),
+            ('false', 'false', 'false'): (0.01,),
     }
 
     # creation of Nodes objects
@@ -409,8 +409,8 @@ def sprinkler():
 
     print('')
 
-    sample = create_random_sample(network)
-    print_joint_probability(network, sample)
+    #sample = create_random_sample(network)
+    #print_joint_probability(network, sample)
 
 
 sprinkler()
